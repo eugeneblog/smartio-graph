@@ -1,8 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './css/index.scss'
+
+import * as d3 from 'd3'
+import {fabric} from 'fabric'
+import 'antd/dist/antd.css';
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+window.d3 = d3
+window.fabric = fabric
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

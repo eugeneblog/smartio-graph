@@ -114,6 +114,7 @@ checkBrowsers(paths.appPath, isInteractive)
         clearConsole();
       }
       console.log(chalk.cyan('Starting the development server...\n'));
+      console.log(chalk.yellow('请联系作者-wx: 17301193803'))
       openBrowser(urls.localUrlForBrowser);
     });
 

@@ -1,11 +1,11 @@
-.App {
-  text-align: center;
+#root, .App{
+    height: 100%;
 }
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.header .logo {
+    float: left;
+    height: 47px;
+    width: 47px;
+    padding: 10px;
+    overflow: hidden;
 }

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { DatePicker } from 'antd';
-import 'antd/dist/antd.css';
+import HLayout from './views/Layout';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <DatePicker/>
+        <HLayout/>
       </div>
     );
   }
