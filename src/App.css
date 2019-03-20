@@ -1,11 +1,37 @@
 #root, .App{
     height: 100%;
 }
-
+/* header */
 .header .logo {
     float: left;
     height: 47px;
     width: 47px;
     padding: 10px;
     overflow: hidden;
+}
+.header a {
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+    padding: 10px;
+}
+.header > .ant-menu > a:hover {
+    background: #e9f6fe;
+}
+.header > .ant-menu > a:link {
+    text-decoration: none;
+}
+
+/* toolbar */
+.toolbar {
+    background: #fff;
+    padding: 6px;
+    border-bottom: 0.5px solid #f3f3f3;
+}
+.toolbar .ant-btn-group {
+    border-right: 1px solid #f3f3f3;
+    margin-right: 20px;
+}
+.toolbar .ant-btn-group button {
+    border: none;
+    margin-right: 10px;
 }
