@@ -35,3 +35,12 @@
     border: none;
     margin-right: 10px;
 }
+
+/* slidebar */
+.slidebar {
+    /* 禁止选择文本 */
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+    overflow: hidden !important;
+}
