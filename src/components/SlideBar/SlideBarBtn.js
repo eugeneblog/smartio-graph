@@ -13,14 +13,10 @@ class SlideBarBtn extends Component {
                 DX: e.clientX
             })
         }
-        document.onmouseup = function (e) {
+        document.onmouseup = function () {
             document.onmousedown=null;
             document.onmousemove=null;
         }
-    }
-    moveHandle(event) {
-        // 改变slide宽度
-        console.log('change')
     }
     render() {
         return (
