@@ -1,17 +1,15 @@
-import { observable, action } from 'mobx'
-
+import { observable, computed, action } from 'mobx'
+import { message } from 'antd'
 class AppState {
-    @observable token = ''
-    @observable menuList = []
-    @action getMenuList () {
-        // ajax 获取菜单列表
-    }
+    @observable todos = []
+    @observable newtodo = ''
+    @observable selecteRowKeys = []
+    @observable loading = true
+    @observable _key = 0
+    @observable total = 0
 
-    @action getToken () {
-        return this.getToken
+    @action addTodo = () => {
+        this._key += 1
     }
+    
 }
-
-const appState = new AppState()
-
-export default appState
