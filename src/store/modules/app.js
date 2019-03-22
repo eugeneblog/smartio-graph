@@ -1,15 +1,17 @@
-import { observable, computed, action } from 'mobx'
-import { message } from 'antd'
-class AppState {
-    @observable todos = []
-    @observable newtodo = ''
-    @observable selecteRowKeys = []
-    @observable loading = true
-    @observable _key = 0
-    @observable total = 0
+// app store 存放页面信息
+import { observable, action } from 'mobx'
 
-    @action addTodo = () => {
-        this._key += 1
+class AppState {
+    @observable language = ''
+    @observable token = ''
+    @observable _ACTIVEFAULT = [] // 存储页面操作记录，用于撤回
+    @observable _ACTIVEROLLBACK= [] // 每次撤销存放记录，用于取消撤回,数据回滚
+
+    @action getToken() {
+        return this.token
     }
-    
 }
+
+let appstate = new AppState()
+
+export default appstate

@@ -4,11 +4,14 @@ class UserState {
     @observable userList = {
         name: '',
         role: '',
-        userId: '',
-        routeList: []
+        uid: ''
+    }
+
+    @action getUserList() {
+        return this.userList
     }
 }
 
-const userState = new UserState()
+const userstate = new UserState()
 
-export default userState
+export default userstate

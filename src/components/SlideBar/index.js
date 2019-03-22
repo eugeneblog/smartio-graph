@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
-import { Layout, Collapse } from 'antd';
+import { Layout } from 'antd';
 import SlideBarBtn from './SlideBarBtn'
+import Shapes from './Shapes/index.js'
 const { Sider } = Layout;
-const Panel = Collapse.Panel;
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
-function callback(key) {
-    console.log(key);
-}
-
 
 class SlideBar extends Component {
     state = {
@@ -40,14 +31,7 @@ class SlideBar extends Component {
             style={{ background: '#fff' }}
             >
                 <SlideBarBtn slideWidth={this.state.sliderWidth} onSlideChange={this.slideChangeHandle.bind(this)}/>
-                <Collapse defaultActiveKey={['1']} onChange={callback}>
-                    <Panel header="This is panel header 1" key="1">
-                        <p>{text}</p>
-                    </Panel>
-                    <Panel header="This is panel header 2" key="2">
-                    <p>{text}</p>
-                    </Panel>
-                </Collapse>
+                <Shapes/>
             </Sider>
         )
     }

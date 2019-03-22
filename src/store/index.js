@@ -1,44 +1,13 @@
+import appstate from './modules/app'
+import userstate from './modules/user'
 
-class TodoStore {
-    todos = [];
-
-    get completeTodosCount() {
-        return this.todos.filter(
-            todo => todo.completed === true
-        ).length;
-    }
-
-    report() {
-        if (this.todos.length === 0) 
-            return '<none>';
-        return `Next todo: "${this.todos[0].task}". ` +
-                `Progress: ${this.completeTodosCount}/${this.todos.length}`
-    }
-
-    addTodo(task) {
-        this.todos.push({
-            task: task,
-            completed: false,
-            assignee: null
-        })
+class Store {
+    get getStoreAll () {
+        return {
+            appstate,
+            userstate
+        }
     }
 }
 
-const todoStore = new TodoStore()
-
-todoStore.addTodo("read MobX tutorial");
-console.log(todoStore.report());
-
-todoStore.addTodo("try MobX");
-console.log(todoStore.report());
-
-todoStore.todos[0].completed = true;
-console.log(todoStore.report());
-
-todoStore.todos[1].task = "try MobX in own project";
-console.log(todoStore.report());
-
-todoStore.todos[0].task = "grok MobX tutorial";
-console.log(todoStore.report());
-
-export default todoStore
+export default Store
