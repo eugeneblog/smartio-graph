@@ -1,29 +1,27 @@
 import React from 'react'
 import {
     Route,
+    Switch,
     Redirect
 } from 'react-router-dom'
 
 import HLayout from '../views/Layout'
 import Test from '../views/Test'
+import UserLogin from '../views/User/Login'
 
-const routerList = [
-    {
-        path: '/',
-        component: () => <Redirect to = "/draw"/>,
-        exact: true
-    }, {
-        path: '/draw',
-        component: HLayout
-    }, {
-        path: '/test',
-        component: Test
-    }
-]
+const enterRoute = (v) => {
+    // 进入路由 ...
+    // 判断页面是否有用户Token，没有默认进入login
+    console.log(v)
+}
 
-export default () => routerList.map((e, i) => {
-    return <Route
-    key = {i}
-    {...e}
-    />
-})
+// 使用switch匹配route
+const MainRoute = () => 
+    <Switch>
+        <Route exact path={'/'} render={() => <Redirect to="/draw" />} />
+        <Route path={'/draw'} component={HLayout} onEnter={enterRoute.bind(this)} />
+        <Route path={'/test'} component={Test} />
+        <Route exact path={'/user/login'} component={UserLogin}/>
+    </Switch>
+
+export default MainRoute

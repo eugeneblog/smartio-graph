@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Collapse } from 'antd';
+import {Link} from 'react-router-dom'
 
 const Panel = Collapse.Panel;
 const text = `
@@ -37,6 +38,7 @@ class Shapes extends Component {
                             <svg width={50} height={50}>
                                 <use xlinkHref="#icon-GLOBE"></use>
                             </svg>
+                            <Link to="/test">test</Link>
                         </Panel>
                     )
                 }

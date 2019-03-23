@@ -7,7 +7,7 @@ import * as d3 from 'd3'
 import {fabric} from 'fabric'
 import 'antd/dist/antd.css';
 
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -19,9 +19,9 @@ let store = new Store()
 const rootNode = document.getElementById('root')
 const render = Component => {
     ReactDOM.render(
-        <BrowserRouter>
+        <HashRouter>
             <Component store={store.getStoreAll} />
-        </BrowserRouter>,
+        </HashRouter>,
         rootNode
     )
 }
