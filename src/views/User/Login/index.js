@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import 'antd/dist/antd.css';
+import ReactSVG from 'react-svg'
+import imgURL from '../../../svg/GraphFont.svg'
 import {
   Form, Icon, Input, Button, Checkbox,
 } from 'antd';
@@ -9,9 +11,16 @@ import {
 const LoginHeader = () => {
     return (
         <div className="login-header">
-            <div>SmartIO-graph</div>
-            <div>describe</div>
+            <ReactSVG src={imgURL} alt="graph"/>
+            <span>Welcome to Smartio graph ,Please log into your account</span>
         </div>
+    )
+}
+
+// login-footer
+const LoginFooter = () => {
+    return (
+        <div className="login-footer"></div>
     )
 }
 
@@ -59,6 +68,7 @@ class NormalLoginForm extends React.Component {
                 Or <a href="">register now!</a>
                 </Form.Item>
             </Form>
+            <LoginFooter/>
         </div>
     );
   }

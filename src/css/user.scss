@@ -1,20 +1,36 @@
 .user-login {
-    flex: 1 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 2px;
-    min-height: 688px;
-    height: calc(100% - 42px);
+    height: calc(100%);
     box-sizing: border-box;
+    .login-header {
+        padding: 10px 0;
+        span {
+            color: $fontColor;
+        }
+    }
     .login-form {
-        margin: 0 auto;
+        position: relative;
+        flex: 1;
         width: 432px;
-        padding: 1rem;
+        padding: 2rem;
         margin: 0 auto;
+        margin-top: 10%;
         text-align: center;
         box-shadow: 0 0 0.4rem rgba($color: #000000, $alpha: 0.2);
+        &::after{
+            content: '';
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: $logoColor;
+            top: 0;
+            right: 0;
+        }
         .login-form-forgot {
             float: right;
         }
@@ -22,11 +38,18 @@
             width: 100%;
         }
     }
+    .login-footer {
+        flex: 1;
+    }
+    // 在user-login内覆盖一些原始样式
     .ant-input {
         height: 44px;
     }
     .ant-btn {
         height: 44px;
+    }
+    .ant-form-item label {
+        float: left;
     }
 }
   
