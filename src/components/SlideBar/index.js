@@ -23,7 +23,6 @@ class SlideBar extends Component {
     }
    
     render() {
-        window.slideWidth = 200
         return (
             <Sider
             width={this.state.sliderWidth}

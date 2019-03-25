@@ -12,6 +12,7 @@ $fontColor: #8590a6;
     overflow: hidden;
     background: #fff;
     border-left: 1px solid #f3f3f3;
+    border-right: 1px solid #f3f3f3;
     cursor: move;
     right: 0;
     top: 0;
@@ -26,8 +27,50 @@ $fontColor: #8590a6;
         display: block;
         position: absolute;
         top: 45%;
-        left: 1px;
+        left: 0;
         transform:rotate(90deg);
         text-align: center;
+    }
+}
+
+.action {
+    position: relative;
+    background: #fff;
+    margin: 0;
+    .action-tabs {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        .ant-tabs-bar {
+            position: absolute !important;
+            bottom: 0px !important;
+            left: 0;
+            right: 0;
+        }
+    }
+    .ant-tabs-tab {
+        border-radius: none;
+    }
+    .ant-tabs-extra-content {
+        float: left !important;
+        background: #f3f3f3;
+        padding: 0 2px;
+    }
+    .ant-tabs-bottom-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 40px;
+        width: auto !important;
+        .ant-tabs-tabpane {
+            height: 100%;
+        }
+    }
+    .action-container {
+        height: 100%;
+        overflow: scroll;
     }
 }

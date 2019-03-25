@@ -1,0 +1,6 @@
+<templates>
+    <template url="default/home.xml">
+    <template url="business/accd.xml" libs="general"/>
+    <template url="business/archimate.xml" libs="general;archimate3"/>
+    <template url="business/bpmn.xml" libs="general;bpmn"/>
+</templates>

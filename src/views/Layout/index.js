@@ -19,10 +19,10 @@ class HLayout extends Component {
                 <Toolbar/>
                 <Layout>
                     <SlideBar/>
-                    <Layout style={{ padding: '0 24px 24px' }}>
+                    <Layout style={{ padding: '0 0px 0px' }}>
                         <Actions/>
                     </Layout>
-                    <Editor/>
+                    {/* <Editor/> */}
                 </Layout>
             </Layout>
         )
