@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Actions from '../../components/Actions'
 import Menus from '../../components/Menus'
 import SlideBar from '../../components/SlideBar'
-import Editor from '../../components/Editor'
+// import Editor from '../../components/Editor'
 import Toolbar from '../../components/Toolbar'
+import { observer } from 'mobx-react'
 import { Layout } from 'antd';
 // import ReactSVG from 'react-svg'
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -11,7 +12,7 @@ import { Layout } from 'antd';
 let LayoutStyle = {
     height: "100%"
 }
-class HLayout extends Component {
+@observer class HLayout extends Component {
     render() {
         return (
             <Layout style={ LayoutStyle }>

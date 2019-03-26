@@ -3,6 +3,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import ReactSVG from 'react-svg'
 import imgURL from '../../../svg/GraphFont.svg'
+import { observer } from 'mobx-react'
 import {
   Form, Icon, Input, Button, Checkbox,
 } from 'antd';
@@ -24,7 +25,7 @@ const LoginFooter = () => {
     )
 }
 
-class NormalLoginForm extends React.Component {
+@observer class NormalLoginForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
