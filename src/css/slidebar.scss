@@ -1,0 +1,15 @@
+.svg-item {
+    display: inline-block;
+    overflow: hidden;
+    width: 42px;
+    height: 42px;
+    border-radius: 3px;
+    background-repeat: no-repeat !important;
+    background-position: 50% 50% !important;
+    padding: 2px;
+    margin: 2px;
+    cursor: move;
+    &:hover {
+        background: #f3f3f3;
+    }
+}

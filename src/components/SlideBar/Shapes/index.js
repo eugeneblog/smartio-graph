@@ -1,29 +1,48 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
 import { Collapse } from 'antd';
-import {Link} from 'react-router-dom'
 
 const Panel = Collapse.Panel;
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
-
 function callback(key) {
     console.log(key);
 }
 
 class Shapes extends Component {
     state = {
+        isSHowThumbnail: false,
         shapesList: [{
             id: '1',
             header: 'This is panel header 1',
-            context: text
+            svgGroup: '',
+            svgUse: ["icon-GLOBE", "icon-SUBSCRIBE", "icon-MOBILELINK", "icon-MAP", "icon-LINKS", "icon-IMPORTANTEMAIL", "icon-MAILCHAIN", "icon-FAX", "icon-HOMEMESSAGE"]
         }, {
             id: '2',
             header: 'This is panel header 2',
-            context: text
+            svgGroup: '',
+            svgUse: ["icon-GLOBE", "icon-SUBSCRIBE", "icon-MOBILELINK", "icon-MAP", "icon-LINKS", "icon-IMPORTANTEMAIL", "icon-MAILCHAIN", "icon-FAX", "icon-HOMEMESSAGE"]
         }]
+    }
+    mouseShowThumbnail = (e) => {
+        this.setState({
+            isSHowThumbnail: true
+        })
+    }
+    mouseHideThumbnail = (e) => {
+        this.setState({
+            isSHowThumbnail: false
+        })
+    }
+    svgItemClickHandle = (e) => {
+        // click handle
+    }
+
+    // 拖拽event
+    svgItemMouseDownHandle = (e) => {
+        console.log('按下')
+    }
+    // 显示缩略图
+    thumbanil = (svg) => {
+        // show thumbanil
     }
     render() {
         return (
@@ -35,10 +54,22 @@ class Shapes extends Component {
                             header={ e.header }
                             key={ String(i) }
                         >
-                            <svg width={50} height={50}>
-                                <use xlinkHref="#icon-GLOBE"></use>
-                            </svg>
-                            <Link to="/test">test</Link>
+                            {
+                                e.svgUse.map(
+                                    (svg) => 
+                                    <a
+                                    onClick={this.svgItemClickHandle}
+                                    onMouseEnter={this.mouseShowThumbnail}
+                                    onMouseLeave={this.mouseHideThumbnail}
+                                    onMouseDown={this.svgItemMouseDownHandle}
+                                    className="svg-item"
+                                    key={svg}>
+                                        <svg width={38} height={38}>
+                                            <use xlinkHref={`#${svg}`}></use>
+                                        </svg>
+                                    </a>
+                                )
+                            }
                         </Panel>
                     )
                 }

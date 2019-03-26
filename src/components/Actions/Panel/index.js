@@ -12,7 +12,7 @@ class ActionPanel extends React.Component {
         return(
             <div className="action-container">
                 <svg style={style}>
-
+                    
                 </svg>
             </div>
         )

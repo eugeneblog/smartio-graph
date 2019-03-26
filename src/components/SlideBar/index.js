@@ -8,11 +8,6 @@ class SlideBar extends Component {
     state = {
         sliderWidth: 200
     }
-    toggle = () => {
-        this.setState({
-          collapsed: !this.state.collapsed,
-        });
-    }
     // 改变slidebar 的宽度
     slideChangeHandle(e) {
         let dw = e.dw
