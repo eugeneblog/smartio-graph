@@ -9,19 +9,22 @@ function callback(key) {
 }
 
 class Shapes extends Component {
-    state = {
-        isSHowThumbnail: false,
-        shapesList: [{
-            id: '1',
-            header: 'This is panel header 1',
-            svgGroup: '',
-            svgUse: ["icon-GLOBE", "icon-SUBSCRIBE", "icon-MOBILELINK", "icon-MAP", "icon-LINKS", "icon-IMPORTANTEMAIL", "icon-MAILCHAIN", "icon-FAX", "icon-HOMEMESSAGE"]
-        }, {
-            id: '2',
-            header: 'This is panel header 2',
-            svgGroup: '',
-            svgUse: ["icon-GLOBE", "icon-SUBSCRIBE", "icon-MOBILELINK", "icon-MAP", "icon-LINKS", "icon-IMPORTANTEMAIL", "icon-MAILCHAIN", "icon-FAX", "icon-HOMEMESSAGE"]
-        }]
+    constructor() {
+        super()
+        this.state = {
+            isSHowThumbnail: false,
+            shapesList: [{
+                id: '1',
+                header: 'This is panel header 1',
+                svgGroup: '',
+                svgUse: ["icon-GLOBE"]
+            }, {
+                id: '2',
+                header: 'This is panel header 2',
+                svgGroup: '',
+                svgUse: ["icon-GLOBE"]
+            }]
+        }
     }
     mouseShowThumbnail = (e) => {
         this.setState({
@@ -39,6 +42,10 @@ class Shapes extends Component {
 
     // 拖拽event
     svgItemMouseDownHandle = (e) => {
+        // 获取被拖拽的图形
+        let cSvg = e.currentTarget.firstElementChild
+        let cSvgId = cSvg.firstElementChild.href.baseVal // xlink:href 的值
+        console.log(cSvgId)
         // 创建div元素，设置样式, 加入dom树
         let oDiv = document.createElement("div")
         d3.select('#root').append(
@@ -61,8 +68,27 @@ class Shapes extends Component {
     }
     // 显示缩略图
     thumbanil = (svg) => {
-        // show thumbanil
+        // svg: 要显示的图
     }
+
+    // 创建图形列表
+    createShapeList = (group, key, sw, sh) => {
+        let items = 
+        <a
+        onClick={this.svgItemClickHandle}
+        onMouseEnter={this.mouseShowThumbnail}
+        onMouseLeave={this.mouseHideThumbnail}
+        onMouseDown={this.svgItemMouseDownHandle}
+        className="svg-item"
+        key={key}>
+            <svg width={sw} height={sh}>
+                <use xlinkHref={`#${key}`}/>
+            </svg>
+        </a>
+        
+        return items
+    }
+
     render() {
         return (
             <Collapse className="collapse" defaultActiveKey={["0"]} onChange={callback}>
@@ -75,18 +101,7 @@ class Shapes extends Component {
                         >
                             {
                                 e.svgUse.map(
-                                    (svg) => 
-                                    <a
-                                    onClick={this.svgItemClickHandle}
-                                    onMouseEnter={this.mouseShowThumbnail}
-                                    onMouseLeave={this.mouseHideThumbnail}
-                                    onMouseDown={this.svgItemMouseDownHandle}
-                                    className="svg-item"
-                                    key={svg}>
-                                        <svg width={38} height={38}>
-                                            <use xlinkHref={`#${svg}`}></use>
-                                        </svg>
-                                    </a>
+                                    (svg) => this.createShapeList(null, svg, 38, 38)
                                 )
                             }
                         </Panel>
