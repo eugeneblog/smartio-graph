@@ -1,3 +1,4 @@
+/* global d3 */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
 import { Collapse } from 'antd';
@@ -38,7 +39,25 @@ class Shapes extends Component {
 
     // 拖拽event
     svgItemMouseDownHandle = (e) => {
-        console.log('按下')
+        // 创建div元素，设置样式, 加入dom树
+        let oDiv = document.createElement("div")
+        d3.select('#root').append(
+            () => oDiv
+        )
+        document.onmousemove = function (event) {
+            // 更改div位置，让其跟随光标移动
+            d3.select(oDiv)
+            .attr('class', "dom-subline")
+            .style('left', `${event.clientX}px`)
+            .style('top', `${event.clientY}px`)
+        }
+        document.onmouseup = function () {
+            // 移除oDiv元素
+            d3.select(oDiv).remove()
+            document.onmousedown=null;
+            document.onmousemove=null;
+        }
+        
     }
     // 显示缩略图
     thumbanil = (svg) => {

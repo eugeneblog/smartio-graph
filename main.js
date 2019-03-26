@@ -1,3 +1,4 @@
+/* global d3 */ 
 const { app, BrowserWindow } = require('electron')
 
 // 保持对window对象的全局引用，如果不这么做的话，当JavaScript对象被
