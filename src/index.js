@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/index.scss'
-import Store from './store/index'
 
 import * as d3 from 'd3'
 import {fabric} from 'fabric'
@@ -14,13 +13,12 @@ import * as serviceWorker from './serviceWorker';
 
 window.d3 = d3
 window.fabric = fabric
-let store = new Store()
 
 const rootNode = document.getElementById('root')
 const render = Component => {
     ReactDOM.render(
         <HashRouter>
-            <Component store={store.getStoreAll} />
+            <Component/>
         </HashRouter>,
         rootNode
     )

@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
+import appshapes from '../../store/modules/shapes'
+import { observer } from 'mobx-react'
 import { Layout } from 'antd';
 import SlideBarBtn from './SlideBarBtn'
 import Shapes from './Shapes/index.js'
 const { Sider } = Layout;
 
-class SlideBar extends Component {
-    state = {
-        sliderWidth: 200
+@observer class SlideBar extends Component {
+    constructor() {
+        super()
+        this.state = {
+            sliderWidth: 200
+        }
     }
     // 改变slidebar 的宽度
     slideChangeHandle(e) {
@@ -25,7 +30,7 @@ class SlideBar extends Component {
             style={{ background: '#fff' }}
             >
                 <SlideBarBtn slideWidth={this.state.sliderWidth} onSlideChange={this.slideChangeHandle.bind(this)}/>
-                <Shapes/>
+                <Shapes appshapes={appshapes}/>
             </Sider>
         )
     }
