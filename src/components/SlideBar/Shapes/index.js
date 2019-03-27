@@ -7,16 +7,17 @@ import { Collapse } from 'antd';
 
 const Panel = Collapse.Panel;
 
-@observer class Shapes extends Component {
+@inject('appstate') @observer class Shapes extends Component {
     constructor() {
         super()
         this.state = {
             isSHowThumbnail: false
         }
+        console.log(this)
     }
 
     componentDidMount() {
-        console.log(this.props.appshapes.shapesList)
+        // console.log(this.props.appshapes.shapesList)
     }
     
     componentWillReact() {
@@ -26,7 +27,7 @@ const Panel = Collapse.Panel;
     createShapeList = (group, key, sw, sh) => {
         let items = 
         <a
-        onClick={this.svgItemClickHandle.bind(this)}
+        onClick={this.svgItemClickHandle}
         onMouseEnter={this.mouseShowThumbnail}
         onMouseLeave={this.mouseHideThumbnail}
         onMouseDown={this.svgItemMouseDownHandle}
