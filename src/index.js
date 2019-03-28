@@ -1,17 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'mobx-react'
 import Store from './store/index'
 import './css/index.scss'
 
 import * as d3 from 'd3'
-import {fabric} from 'fabric'
-import 'antd/dist/antd.css';
+import { fabric } from 'fabric'
+import 'antd/dist/antd.css'
 
 import { HashRouter } from 'react-router-dom'
 
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import App from './App'
+import * as serviceWorker from './serviceWorker'
 
 window.d3 = d3
 window.fabric = fabric
