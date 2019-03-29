@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 // import { observable } from 'mobx'
 import { Collapse } from 'antd';
+import Thumbanil from './Thumbanil'
 
 const Panel = Collapse.Panel;
 
@@ -11,20 +12,15 @@ const Panel = Collapse.Panel;
     constructor() {
         super()
         this.state = {
-            isSHowThumbnail: false,
             thumbanilStyle: {
                 top: 0,
-                left: 0,
-            },
-            thumbanilText: ''
+                left: 0
+            }
         }
-        console.log(this)
     }
-
     componentDidMount() {
         // console.log(this.props.appshapes.shapesList)
     }
-    
     componentWillReact() {
         // console.log(this)
     }
@@ -45,7 +41,6 @@ const Panel = Collapse.Panel;
         
         return items
     }
-
     render() {
         return (
             <div className="collapse-wraper">
@@ -53,24 +48,25 @@ const Panel = Collapse.Panel;
                     {
                         this.props.appshapes.shapesList.map(
                             (e,i) =>
-                                <Panel
-                                    header={ e.header }
-                                    key={ String(i) }
-                                >
-                                    {
-                                        e.svgUse.map(
-                                            (svg) => this.createShapeList(null, svg, 38, 38)
-                                        )
-                                    }
-                                </Panel>
+                            <Panel
+                                header={ e.header }
+                                key={ String(i) }
+                            >
+                                {
+                                    e.svgUse.map(
+                                        (svg) => this.createShapeList(null, svg, 38, 38)
+                                    )
+                                }
+                            </Panel>
                         )
                     }
                 </Collapse>
-                {
-                  this.state.isSHowThumbnail ? <div id="svgThumbanil" className="thumbanil" style={this.state.thumbanilStyle}>
-                      <address>{ this.state.thumbanilText }</address>
-                  </div> : null
-                }
+                <Thumbanil 
+                thumbanilStyle={this.state.thumbanilStyle} 
+                thumbanilText={this.state.thumbanilText} 
+                isShow={this.state.isSHowThumbnail}
+                svg={this.state.thumbanilSvg}
+                />
             </div>
         )
     }
@@ -110,17 +106,16 @@ const Panel = Collapse.Panel;
                 thumbanilStyle: {
                     left: `${options.SVGoffsetX}px`,
                     top: `${options.SVGoffsetY + 60}px`
-                }
+                },
+                thumbanilText: options.cSvg.tagName
             })
             console.log(options)
         }
     }
-
     // 点击item
     svgItemClickHandle = (e) => {
         // click handle
     }
-
     // 鼠标按下增加拖拽辅助线
     svgItemMouseDownHandle = (e) => {
         // 获取被拖拽的图形
@@ -148,7 +143,6 @@ const Panel = Collapse.Panel;
 
     }
 }
-
 // 点击callapse panel的回调
 function changeCallback(key) {
     console.log(key);

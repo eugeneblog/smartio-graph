@@ -3,6 +3,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import ReactSVG from 'react-svg'
 import imgURL from '../../../svg/GraphFont.svg'
+import { verifyUserLogin } from '../../../api/index'
 import { observer } from 'mobx-react'
 import {
   Form, Icon, Input, Button, Checkbox,
@@ -26,10 +27,13 @@ const LoginFooter = () => {
 }
 
 @observer class NormalLoginForm extends React.Component {
+  // 表单提交
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        // 发送post请求验证 ,接口地址: /api/smartio/user/login
+        verifyUserLogin(values)
         console.log('Received values of form: ', values);
       }
     });
@@ -63,7 +67,7 @@ const LoginFooter = () => {
                     <Checkbox>Remember me</Checkbox>
                 )}
                 <a className="login-form-forgot" href="">Forgot password</a>
-                <Button type="primary" htmlType="submit" className="login-form-button">
+                <Button onClick={this.loginHandle} type="primary" htmlType="submit" className="login-form-button">
                     Log in
                 </Button>
                 Or <a href="">register now!</a>
