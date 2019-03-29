@@ -11,7 +11,12 @@ const Panel = Collapse.Panel;
     constructor() {
         super()
         this.state = {
-            isSHowThumbnail: false
+            isSHowThumbnail: false,
+            thumbanilStyle: {
+                top: 0,
+                left: 0,
+            },
+            thumbanilText: ''
         }
         console.log(this)
     }
@@ -43,31 +48,45 @@ const Panel = Collapse.Panel;
 
     render() {
         return (
-            <Collapse className="collapse" defaultActiveKey={["0"]} onChange={changeCallback}>
+            <div className="collapse-wraper">
+                <Collapse className="collapse" defaultActiveKey={["0"]} onChange={changeCallback}>
+                    {
+                        this.props.appshapes.shapesList.map(
+                            (e,i) =>
+                                <Panel
+                                    header={ e.header }
+                                    key={ String(i) }
+                                >
+                                    {
+                                        e.svgUse.map(
+                                            (svg) => this.createShapeList(null, svg, 38, 38)
+                                        )
+                                    }
+                                </Panel>
+                        )
+                    }
+                </Collapse>
                 {
-                    this.props.appshapes.shapesList.map(
-                        (e,i) => 
-                        <Panel
-                            header={ e.header }
-                            key={ String(i) }
-                        >
-                            {
-                                e.svgUse.map(
-                                    (svg) => this.createShapeList(null, svg, 38, 38)
-                                )
-                            }
-                        </Panel>
-                    )
+                  this.state.isSHowThumbnail ? <div id="svgThumbanil" className="thumbanil" style={this.state.thumbanilStyle}>
+                      <address>{ this.state.thumbanilText }</address>
+                  </div> : null
                 }
-            </Collapse>
+            </div>
         )
     }
     // 鼠标移入
     mouseShowThumbnail = (e) => {
+        // 元素距离页面顶端的位置
+        let options = {
+            cSvg: e.currentTarget.firstElementChild,
+            SVGoffsetX: this.props.slideWidth,
+            SVGoffsetY: e.currentTarget.offsetTop
+        }
         this.setState({
             isSHowThumbnail: true
+        }, () => {
+            this.thumbanil(options)
         })
-        this.thumbanil()
     }
     // 鼠标移开
     mouseHideThumbnail = (e) => {
@@ -76,8 +95,25 @@ const Panel = Collapse.Panel;
         })
     }
     // 显示缩略图
-    thumbanil = (svg) => {
-        // svg: 要显示的图
+    thumbanil = (options) => {
+        // svg: 要显示的图, 缩略图坐标 =  ox: 元素左偏移量 和 oy: 元素顶部距离
+        let _default = {
+            cSvg: null,
+            SVGoffsetX: null,
+            SVGoffsetY: null
+        }
+        options = options || _default
+        let isShow = this.state.isSHowThumbnail
+        if (isShow) {
+            // 更改缩略图样式
+            this.setState({
+                thumbanilStyle: {
+                    left: `${options.SVGoffsetX}px`,
+                    top: `${options.SVGoffsetY + 60}px`
+                }
+            })
+            console.log(options)
+        }
     }
 
     // 点击item

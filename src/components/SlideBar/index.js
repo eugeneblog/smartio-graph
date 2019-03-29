@@ -29,7 +29,10 @@ class SlideBar extends Component {
             style={{ background: '#fff' }}
             >
                 <SlideBarBtn slideWidth={this.state.sliderWidth} onSlideChange={this.slideChangeHandle.bind(this)}/>
-                <Shapes appshapes={appshapes}/>
+                <Shapes
+                    appshapes={appshapes}
+                    slideWidth={this.state.sliderWidth}
+                />
             </Sider>
         )
     }

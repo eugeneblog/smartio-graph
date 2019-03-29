@@ -8,7 +8,6 @@ const serverHandle = (req, res) => {
     // 解析query
     req.query = querystring.parse(url.aplit('?')[1])
 
-
 }
 
 module.exports = serverHandle

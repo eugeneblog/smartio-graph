@@ -18,12 +18,9 @@ const EditMenu = (
 )
 
 class Menus extends Component {
-    handleMenuClick = (e) => {
-        console.log(e)
-    }
     render() {
         const fileMenu = (
-            <Menu onClick={this.handleMenuClick}>
+            <Menu>
               <Menu.Item>
                 <a target="_blank" rel="noopener noreferrer" >1st menu item</a>
               </Menu.Item>
@@ -56,22 +53,22 @@ class Menus extends Component {
                     mode="horizontal"
                 >
                     <Dropdown overlay={fileMenu}>
-                        <a className="ant-dropdown-link" href="#">
+                        <a className="ant-dropdown-link" href="javascript:void(0);">
                         File
                         </a>
                     </Dropdown>
                     <Dropdown overlay={ViewMenu}>
-                        <a className="ant-dropdown-link" href="#">
+                        <a className="ant-dropdown-link" href="javascript:void(0);">
                         View
                         </a>
                     </Dropdown>
                     <Dropdown overlay={EditMenu}>
-                        <a className="ant-dropdown-link" href="#">
+                        <a className="ant-dropdown-link" href="javascript:void(0);">
                         Edit
                         </a>
                     </Dropdown>
                     <Dropdown overlay={EditMenu}>
-                        <a className="ant-dropdown-link" href="#">
+                        <a className="ant-dropdown-link" href="javascript:void(0);">
                         Help
                         </a>
                     </Dropdown>
