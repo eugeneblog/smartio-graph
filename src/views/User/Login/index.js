@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import 'antd/dist/antd.css';
@@ -14,7 +15,7 @@ const LoginHeader = () => {
     return (
         <div className="login-header">
             <ReactSVG src={imgURL} alt="graph"/>
-            <span>Welcome to Smartio graph ,Please log into your account</span>
+            <span>Welcome to <a target="_blank" href="http://www.smartio.cc">SmartIO</a> graph ,Please log into your account</span>
         </div>
     )
 }
@@ -32,8 +33,12 @@ const LoginFooter = () => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // 发送post请求验证 ,接口地址: /api/smartio/user/login
-        verifyUserLogin(values)
+        // 发送post请求验证用户名密码 ,接口地址: /api/smartio/user/login
+        verifyUserLogin(values).then((res) => {
+            // 处理登陆成功的逻辑
+        }).catch((err) => {
+            // 错误处理
+        })
         console.log('Received values of form: ', values);
       }
     });

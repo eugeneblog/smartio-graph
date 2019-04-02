@@ -1,20 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { HashRouter } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 import Store from './store/index'
 import './css/index.scss'
 
+// 引入d3.js svg.js 用于操作svg图形
 import * as d3 from 'd3'
-import { fabric } from 'fabric'
+// eslint-disable-next-line no-unused-vars
+import { SVG } from '@svgdotjs/svg.js'
+import '@svgdotjs/svg.draggable.js'
 import 'antd/dist/antd.css'
-
-import { HashRouter } from 'react-router-dom'
 
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 window.d3 = d3
-window.fabric = fabric
+window.SVG = SVG
 const appstate = new Store()
 
 const rootNode = document.getElementById('root')
