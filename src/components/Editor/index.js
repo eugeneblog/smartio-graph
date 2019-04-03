@@ -3,6 +3,12 @@ import React, { Component } from 'react'
 import { Card } from 'antd';
 
 class Editor extends Component {
+    constructor() {
+        super()
+        this.state = {
+
+        }
+    }
     render() {
         return (
             <div>

@@ -9,9 +9,9 @@ class TabPanel extends React.Component {
     super(props);
     this.newTabIndex = 0;
     const panes = [
-      { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: false },
-      { title: 'Tab 2', content: 'Content of Tab 2', key: '2' },
-      { title: 'Tab 3', content: 'Content of Tab 3', key: '3' },
+      { title: 'Tab 1', key: '1', closable: false },
+      { title: 'Tab 2', key: '2' },
+      { title: 'Tab 3', key: '3' },
     ];
     this.state = {
       activeKey: panes[0].key,
@@ -30,7 +30,7 @@ class TabPanel extends React.Component {
   add = () => {
     const panes = this.state.panes;
     const activeKey = `newTab${this.newTabIndex++}`;
-    panes.push({ title: 'New Tab', content: 'Content of new Tab', key: activeKey });
+    panes.push({ title: 'New Tab', key: activeKey });
     this.setState({ panes, activeKey });
   }
 
@@ -67,7 +67,7 @@ class TabPanel extends React.Component {
             this.state.panes.map(
                 pane => 
                 <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-                    <ActionPanel/>
+                    <ActionPanel paneId = {`drawing${pane.key}`}/>
                 </TabPane>
             )
         }

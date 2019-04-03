@@ -35,7 +35,10 @@ const LoginFooter = () => {
       if (!err) {
         // 发送post请求验证用户名密码 ,接口地址: /api/smartio/user/login
         verifyUserLogin(values).then((res) => {
-            // 处理登陆成功的逻辑
+            // 登陆成功进行路由跳转
+            this.props.history.push('/draw')
+            // 存储用户信息
+            
         }).catch((err) => {
             // 错误处理
         })

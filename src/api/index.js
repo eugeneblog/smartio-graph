@@ -4,7 +4,7 @@ import request from '../utils/request'
 export function getTemplate(query) {
     return request({
         url: 'api/draw/template',
-        method: 'get',
+        method: 'GET',
         params: query
     })
 }
@@ -13,7 +13,7 @@ export function getTemplate(query) {
 export function verifyUserLogin(data) {
     return request({
         url: 'api/smartio/user/login',
-        method: 'post',
+        method: 'POST',
         data: data || {}
     })
 }
