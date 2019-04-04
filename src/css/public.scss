@@ -88,10 +88,20 @@ $fontColor: #8590a6;
 
 [id*=drawing] {
     svg {
+        position: relative;
         min-width: 2000px !important;
         min-height: 1800px !important;
         background: #f3f3f3 !important;
         background-image: linear-gradient(white 2px,transparent 0),linear-gradient(90deg, white 2px,transparent 0),linear-gradient(hsla(0,0%,100%,.3) 1px,transparent 0),linear-gradient(90deg,hsla(0,0%,100%,.3) 1px,transparent 0) !important;
         background-size: 75px 75px,75px 75px,15px 15px,15px 15px !important;
+    }
+    .choicebox {
+        position: absolute;
+        z-index: 999;
+        background: red;
+        opacity: 0.3;
+        border:1px solid; 
+        border-color: #29b6f2 !important; 
+        background:rgba(41,182,242,0.5) !important; 
     }
 }

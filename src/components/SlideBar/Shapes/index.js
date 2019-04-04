@@ -8,7 +8,10 @@ import Thumbanil from './Thumbanil'
 
 const Panel = Collapse.Panel;
 
-@inject('appstate') @observer class Shapes extends Component {
+// 从store将shapes注入组件
+@inject((allStores) => {
+    return allStores.appstate.shapes || []
+}) @observer class Shapes extends Component {
     constructor() {
         super()
         this.state = {
@@ -46,7 +49,7 @@ const Panel = Collapse.Panel;
             <div className="collapse-wraper">
                 <Collapse className="collapse" defaultActiveKey={["0"]} onChange={changeCallback}>
                     {
-                        this.props.appshapes.shapesList.map(
+                        this.props.shapesList.map(
                             (e,i) =>
                             <Panel
                                 header={ e.header }
