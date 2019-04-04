@@ -14,7 +14,6 @@ class SlideBarBtn extends Component {
             })
         }
         document.onmouseup = function () {
-            document.onmousedown=null;
             document.onmousemove=null;
         }
     }

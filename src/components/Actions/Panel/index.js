@@ -52,32 +52,33 @@ class ActionPanel extends React.Component {
                     left: startX
                 }
             })
+            document.onmousemove = function (e) {
+                if (!mouseOn) return;
+                _this.clearEventBubble(e);
+                var selectContainer = document.getElementById(`${_this.props.paneId}`);
+                var _x = e.clientX - 202 + selectContainer.scrollLeft;
+                var _y = e.clientY - 86 + selectContainer.scrollTop;
+                _this.setState({
+                    choiceStyle: {
+                        top: Math.min(_y, startY),
+                        left: Math.min(_x, startX),
+                        width: Math.abs(_x - startX),
+                        height: Math.abs(_y - startY)
+                    }
+                })
+            }
+            document.onmouseup = function (e) {
+                if (!mouseOn) return;
+                _this.clearEventBubble(e);
+                _this.setState({
+                    choiceBoxIsShow: false
+                })
+                mouseOn = false;
+            };
         }
         let container = document.getElementById(`${_this.props.paneId}`)
         container.onmousedown = mousedownHandle
-        document.onmousemove = function (e) {
-            if (!mouseOn) return;
-            _this.clearEventBubble(e);
-            var selectContainer = document.getElementById(`${_this.props.paneId}`);
-            var _x = e.clientX - 202 + selectContainer.scrollLeft;
-            var _y = e.clientY - 86 + selectContainer.scrollTop;
-            _this.setState({
-                choiceStyle: {
-                    top: Math.min(_y, startY),
-                    left: Math.min(_x, startX),
-                    width: Math.abs(_x - startX),
-                    height: Math.abs(_y - startY)
-                }
-            })
-        }
-        document.onmouseup = function (e) {
-            if (!mouseOn) return;
-            _this.clearEventBubble(e);
-            _this.setState({
-                choiceBoxIsShow: false
-            })
-            mouseOn = false;
-        };
+        
         // let rect = draw.rect(100, 100).radius(10)
         // draw.group().add(rect).draggable()
         // rect.draggable()

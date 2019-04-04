@@ -48,6 +48,7 @@ $fontColor: #8590a6;
             bottom: 0px !important;
             left: 0;
             right: 0;
+            background: #fff;
         }
     }
     .ant-tabs-tab {
@@ -97,7 +98,6 @@ $fontColor: #8590a6;
     }
     .choicebox {
         position: absolute;
-        z-index: 999;
         background: red;
         opacity: 0.3;
         border:1px solid; 
