@@ -55,9 +55,9 @@ class ActionPanel extends React.Component {
             document.onmousemove = function (e) {
                 if (!mouseOn) return;
                 _this.clearEventBubble(e);
-                var selectContainer = document.getElementById(`${_this.props.paneId}`);
-                var _x = e.clientX - 202 + selectContainer.scrollLeft;
-                var _y = e.clientY - 86 + selectContainer.scrollTop;
+                // var selectContainer = document.getElementById(`${_this.props.paneId}`);
+                var _x = e.clientX - 202;
+                var _y = e.clientY - 86;
                 _this.setState({
                     choiceStyle: {
                         top: Math.min(_y, startY),
