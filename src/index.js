@@ -7,16 +7,15 @@ import './css/index.scss'
 
 // 引入d3.js svg.js 用于操作svg图形
 import * as d3 from 'd3'
-// eslint-disable-next-line no-unused-vars
-import { SVG } from '@svgdotjs/svg.js'
-import '@svgdotjs/svg.draggable.js'
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Snap from 'imports-loader?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js'
 import 'antd/dist/antd.css'
 
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 window.d3 = d3
-window.SVG = SVG
+window.Snap = Snap
 const appstate = new Store()
 
 const rootNode = document.getElementById('root')
