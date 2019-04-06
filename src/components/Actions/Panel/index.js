@@ -42,9 +42,12 @@ class ActionPanel extends React.Component {
             _this.clearEventBubble(e)
             if (e.buttons !== 1 || e.which !== 1) return;
             mouseOn = true;
+             // _nHeight: navbar的高度, _sWidth: slide的宽度 ，鼠标点击的距离 - slide的宽度 = _x鼠标与画板左边缘的距离，同理_y 是鼠标距离画板顶部的距离
+            let _nHeight = d3.select('#mainContainer').node().offsetTop
+            let _sWidth = d3.select('#slidrContainer').node().offsetWidth
             // 调整坐标原点为容器左上角
-            startX = e.clientX - 202;
-            startY = e.clientY - 86;
+            startX = e.clientX - _sWidth;
+            startY = e.clientY - _nHeight;
             _this.setState({
                 choiceBoxIsShow: true,
                 choiceStyle: {
@@ -56,9 +59,6 @@ class ActionPanel extends React.Component {
                 if (!mouseOn) return;
                 _this.clearEventBubble(e);
                 // var selectContainer = document.getElementById(`${_this.props.paneId}`);
-                // _nHeight: navbar的高度, _sWidth: slide的宽度 ，鼠标点击的距离 - slide的宽度 = _x鼠标与画板左边缘的距离，同理_y 是鼠标距离画板顶部的距离
-                let _nHeight = d3.select('#mainContainer').node().offsetTop
-                let _sWidth = d3.select('#slidrContainer').node().offsetWidth
                 let _x = e.clientX - _sWidth;
                 let _y = e.clientY - _nHeight;
                 // 框选区域的top值为 当前点击的top值与第一次点击的top值直接的最小值，left同理
