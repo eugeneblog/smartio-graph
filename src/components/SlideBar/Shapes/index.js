@@ -21,12 +21,6 @@ const Panel = Collapse.Panel;
             }
         }
     }
-    componentDidMount() {
-        // console.log(this.props.appshapes.shapesList)
-    }
-    componentWillReact() {
-        // console.log(this)
-    }
     // 创建图形列表
     createShapeList = (group, key, sw, sh) => {
         let items = 
@@ -72,6 +66,10 @@ const Panel = Collapse.Panel;
                 />
             </div>
         )
+    }
+    // 判断是否移入svg绘画区域
+    isEnterSvg = (nX, nY) => {
+        console.log(this.props)
     }
     // 鼠标移入
     mouseShowThumbnail = (e) => {
@@ -130,8 +128,9 @@ const Panel = Collapse.Panel;
         d3.select('#root').append(
             () => oDiv
         )
-        document.onmousemove = function (event) {
+        document.onmousemove = (event) => {
             // 更改div位置，让其跟随光标移动
+            this.isEnterSvg(event.clientX, event.clientY)
             d3.select(oDiv)
                 .attr('class', "dom-subline")
                 .style('left', `${event.clientX}px`)

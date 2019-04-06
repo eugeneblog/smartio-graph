@@ -24,6 +24,7 @@ class SlideBar extends Component {
     render() {
         return (
             <Sider
+            id="slidrContainer"
             width={this.state.sliderWidth}
             className="slidebar"
             style={{ background: '#fff' }}

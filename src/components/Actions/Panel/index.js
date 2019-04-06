@@ -32,9 +32,7 @@ class ActionPanel extends React.Component {
     componentDidMount() {
         let _this = this
         let paneId = _this.props.paneId
-        let draw = Snap(`#${this.props.paneId} > svg`)
-        var bigCircle = draw.circle(150, 150, 100);
-        console.log(draw)
+        Snap(`#${this.props.paneId} > svg`)
         // 添加鼠标选择框
         // 默认不允许框选
         let mouseOn = false
@@ -58,9 +56,11 @@ class ActionPanel extends React.Component {
                 if (!mouseOn) return;
                 _this.clearEventBubble(e);
                 // var selectContainer = document.getElementById(`${_this.props.paneId}`);
-                // 86 和 202 明日替换成变量，分别为顶栏高度，和slide宽度
-                var _x = e.clientX - 202;
-                var _y = e.clientY - 86;
+                // _nHeight: navbar的高度, _sWidth: slide的宽度 ，鼠标点击的距离 - slide的宽度 = _x鼠标与画板左边缘的距离，同理_y 是鼠标距离画板顶部的距离
+                let _nHeight = d3.select('#mainContainer').node().offsetTop
+                let _sWidth = d3.select('#slidrContainer').node().offsetWidth
+                let _x = e.clientX - _sWidth;
+                let _y = e.clientY - _nHeight;
                 // 框选区域的top值为 当前点击的top值与第一次点击的top值直接的最小值，left同理
                 // 框选区域的宽度为，第一次点击的clientX值减去移动后的clientX值的绝对值, 例如，（100 - 200） = -100：宽度为100px, （200-100）= 100：宽度也是100px，所以必须是绝对值
                 _this.setState({

@@ -6,7 +6,7 @@ const { Content } = Layout
 class Action extends Component {
     render() {
         return (
-            <Content className="action"
+            <Content id="mainContainer" className="action"
             >
                 <TabPanel/>
             </Content>
