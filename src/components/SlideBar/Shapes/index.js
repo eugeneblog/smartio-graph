@@ -69,7 +69,7 @@ const Panel = Collapse.Panel;
     }
     // 判断是否移入svg绘画区域
     isEnterSvg = (nX, nY) => {
-        console.log(this.props)
+        let sX = this.props.slideWidth
     }
     // 鼠标移入
     mouseShowThumbnail = (e) => {

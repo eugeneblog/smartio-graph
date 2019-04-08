@@ -17,3 +17,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
   monospace;
 }
+
+.smartIO-menu {
+   /* 禁止选择文本 */
+   -moz-user-select:none;
+   -webkit-user-select:none;
+   user-select:none;
+  span {
+    float: right;
+    color: rgba($color: #000000, $alpha: 0.4);
+    padding-left: 40px;
+    text-align: right;
+  }
+}

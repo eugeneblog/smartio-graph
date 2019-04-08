@@ -2,76 +2,79 @@
 import React, { Component } from 'react'
 import {Menu, Dropdown} from 'antd'
 import { Logo } from "../Logo/index";
-
-const EditMenu = (
-    <Menu>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" >1st menu item</a>
-      </Menu.Item>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" >2nd menu item</a>
-      </Menu.Item>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" >3rd menu item</a>
-      </Menu.Item>
-    </Menu>
-)
+const menuList = [{
+  'name': 'file',
+  'overlay': 'fileMenu',
+  'children': [{
+    'name': 'New',
+    'shortcutKey': 'Ctrl+N'
+  }, {
+    'name': 'Open From',
+    'shortcutKey': 'Ctrl+O',
+    'children': [{
+      'name': 'device...'
+    }, {
+      'name': 'URL'
+    }]
+  }, {
+    'name': 'Save',
+    'shortcutKey': 'Ctrl+S'
+  }, {
+    'name': 'Save as...',
+    'shortcutKey': 'Ctrl+Alt+S'
+  }]
+}, {
+  'name': 'view',
+  'overlay': 'ViewMenu',
+  'children': [{
+    'name': 'Outline',
+    'shortcutKey': 'Ctrl+Shift+P',
+    'isUse': false
+  }, {
+    'name': 'Layers',
+    'shortcutKey': 'Ctrl+Shift+L',
+    'isUse': false
+  }, {
+    'name': 'Format Panel',
+    'shortcutKey': 'Ctrl+Shift+O',
+    'isUse': false
+  }]
+}]
 
 class Menus extends Component {
     render() {
-        const fileMenu = (
-            <Menu>
-              <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" >1st menu item</a>
-              </Menu.Item>
-              <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" >2nd menu item</a>
-              </Menu.Item>
-              <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" >3rd menu item</a>
-              </Menu.Item>
-            </Menu>
-        );
-        
-        const ViewMenu = (
-            <Menu>
-              <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" >1st menu item</a>
-              </Menu.Item>
-              <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" >2nd menu item</a>
-              </Menu.Item>
-              <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" >3rd menu item</a>
-              </Menu.Item>
-            </Menu>
-        )
         return (
             <div className="header">
                 <Logo />
                 <Menu
                     mode="horizontal"
                 >
-                    <Dropdown overlay={fileMenu}>
-                        <a className="ant-dropdown-link" href="javascript:void(0);">
-                        File
-                        </a>
-                    </Dropdown>
-                    <Dropdown overlay={ViewMenu}>
-                        <a className="ant-dropdown-link" href="javascript:void(0);">
-                        View
-                        </a>
-                    </Dropdown>
-                    <Dropdown overlay={EditMenu}>
-                        <a className="ant-dropdown-link" href="javascript:void(0);">
-                        Edit
-                        </a>
-                    </Dropdown>
-                    <Dropdown overlay={EditMenu}>
-                        <a className="ant-dropdown-link" href="javascript:void(0);">
-                        Help
-                        </a>
-                    </Dropdown>
+                    {
+                      menuList.map((e, i) => {
+                        return (
+                          <Dropdown overlay={
+                            <Menu>
+                              {
+                                e.children.map((item) => {
+                                  return (
+                                    <Menu.Item className="smartIO-menu" key={item.name}>
+                                      <a target="_blank" rel="noopener noreferrer" >
+                                        {item.name}
+                                        <span>{item.shortcutKey || ''}</span>
+                                      </a>
+                                    </Menu.Item>
+                                  )
+                                })
+                              }
+                            </Menu>
+                          } key={i}>
+                              <a className="ant-dropdown-link" href="javascript:void(0);">
+                              {e.name}
+                              </a>
+                          </Dropdown> 
+                        )
+                      })
+                    }
                 </Menu>
             </div>
         )
