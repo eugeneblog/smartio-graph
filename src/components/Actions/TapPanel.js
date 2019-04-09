@@ -1,18 +1,18 @@
 import React from 'react'
 import { Tabs } from 'antd';
+import { observer, inject } from 'mobx-react'
 import ActionPanel from './Panel'
 
 const TabPane = Tabs.TabPane;
 
-class TabPanel extends React.Component {
+@inject(allStore => {
+  console.log(allStore.appstate.mainstate.addPanes)
+  return allStore.appstate.mainstate
+}) @observer class TabPanel extends React.Component {
   constructor(props) {
     super(props);
     this.newTabIndex = 0;
-    const panes = [
-      { title: 'Tab 1', key: '1', closable: false },
-      { title: 'Tab 2', key: '2' },
-      { title: 'Tab 3', key: '3' },
-    ];
+    const panes = this.props.tabPanes
     this.state = {
       activeKey: panes[0].key,
       panes,

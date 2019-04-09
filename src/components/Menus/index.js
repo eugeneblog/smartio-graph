@@ -1,84 +1,112 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
-import {Menu, Dropdown} from 'antd'
+import {Menu, Dropdown, message } from 'antd'
 import { Logo } from "../Logo/index";
+const SubMenu = Menu.SubMenu;
+
 const menuList = [{
-  'name': 'file',
+  'text': 'file',
   'overlay': 'fileMenu',
   'children': [{
-    'name': 'New',
+    'text': 'New',
+    'name': 'newTabPanelHandle',
     'shortcutKey': 'Ctrl+N'
   }, {
-    'name': 'Open From',
+    'text': 'Open From',
     'shortcutKey': 'Ctrl+O',
     'children': [{
-      'name': 'device...'
+      'text': 'device...',
+      'name': 'openFromDevice'
     }, {
-      'name': 'URL'
+      'text': 'URL',
+      'name': 'openFromUrl'
     }]
   }, {
-    'name': 'Save',
-    'shortcutKey': 'Ctrl+S'
+    'text': 'Save',
+    'shortcutKey': 'Ctrl+S',
+    'name': 'saveFileHandle'
   }, {
-    'name': 'Save as...',
-    'shortcutKey': 'Ctrl+Alt+S'
+    'text': 'Save as...',
+    'shortcutKey': 'Ctrl+Alt+S',
+    'name': 'saveAsHandle'
   }]
 }, {
-  'name': 'view',
+  'text': 'view',
   'overlay': 'ViewMenu',
   'children': [{
-    'name': 'Outline',
+    'text': 'Outline',
     'shortcutKey': 'Ctrl+Shift+P',
+    'name': 'showOutline',
     'isUse': false
   }, {
-    'name': 'Layers',
+    'text': 'Layers',
     'shortcutKey': 'Ctrl+Shift+L',
+    'name': 'showLayers',
     'isUse': false
   }, {
-    'name': 'Format Panel',
+    'text': 'Format Panel',
     'shortcutKey': 'Ctrl+Shift+O',
+    'name': 'showFormat',
     'isUse': false
   }]
 }]
+// 菜单点击事件
+const menuOnClick = ({ key }) => {
+  message.info(`Click on item ${key}`)
+}
 
 class Menus extends Component {
-    render() {
+  // 递归调用菜单
+  recursionMenu = (list) => {
+    return list.map((item) => {
+      if(!item.children) {
         return (
-            <div className="header">
-                <Logo />
-                <Menu
-                    mode="horizontal"
-                >
-                    {
-                      menuList.map((e, i) => {
-                        return (
-                          <Dropdown overlay={
-                            <Menu>
-                              {
-                                e.children.map((item) => {
-                                  return (
-                                    <Menu.Item className="smartIO-menu" key={item.name}>
-                                      <a target="_blank" rel="noopener noreferrer" >
-                                        {item.name}
-                                        <span>{item.shortcutKey || ''}</span>
-                                      </a>
-                                    </Menu.Item>
-                                  )
-                                })
-                              }
-                            </Menu>
-                          } key={i}>
-                              <a className="ant-dropdown-link" href="javascript:void(0);">
-                              {e.name}
-                              </a>
-                          </Dropdown> 
-                        )
-                      })
-                    }
-                </Menu>
-            </div>
+          <Menu.Item className="smartIO-menu" key={ item.name }>
+            <a target="_blank" rel="noopener noreferrer" >
+              { item.text }
+              <span>{ item.shortcutKey || '' }</span>
+            </a>
+          </Menu.Item>
         )
-    }
+      } else {
+        return (
+          <SubMenu title={ item.text } key={ item.text }>
+            {
+              this.recursionMenu(item.children)
+            }
+          </SubMenu>
+        )
+      }
+    })
+  }
+  render() {
+    return (
+      <div className="header">
+        <Logo />
+        <Menu
+            mode="horizontal"
+        >
+          {
+            menuList.map((e, i) => {
+              return (
+                <Dropdown overlay={
+                  <Menu onClick={menuOnClick}>
+                    {
+                      this.recursionMenu(e.children)
+                    }
+                  </Menu>
+                } key={i}>
+                    <a className="ant-dropdown-link" href="javascript:void(0);">
+                    {e.text}
+                    </a>
+                </Dropdown> 
+              )
+            })
+          }
+        </Menu>
+      </div>
+    )
+  }
 }
 
 export default Menus
