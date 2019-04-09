@@ -6,17 +6,22 @@ import ActionPanel from './Panel'
 const TabPane = Tabs.TabPane;
 
 @inject(allStore => {
-  console.log(allStore.appstate.mainstate.addPanes)
   return allStore.appstate.mainstate
 }) @observer class TabPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.newTabIndex = 0;
+    this.newTabIndex = this.props.newTabIndex
     const panes = this.props.tabPanes
     this.state = {
       activeKey: panes[0].key,
       panes,
     };
+  }
+
+  componentDidUpdate() {
+    // this.newTabIndex = this.props.newTabIndex
+    this.newTabIndex = this.props.newTabIndex
+    console.log(this.newTabIndex)
   }
 
   onChange = (activeKey) => {
@@ -28,10 +33,13 @@ const TabPane = Tabs.TabPane;
   }
 
   add = () => {
-    const panes = this.state.panes;
-    const activeKey = `newTab${this.newTabIndex++}`;
-    panes.push({ title: 'New Tab', key: activeKey });
-    this.setState({ panes, activeKey });
+    // const panes = this.state.panes;
+    let activeKey = `newTab${this.newTabIndex++}`;
+    // this.newTabIndex++
+    console.log(this.newTabIndex)
+    // panes.push({ title: `New Tab`, key: activeKey });
+    // this.setState({ panes, activeKey });
+    // this.state.panes.push({ title: `New Tab`, key: activeKey })
   }
 
   remove = (targetKey) => {
