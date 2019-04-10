@@ -62,8 +62,7 @@ const menuOnClick = function({item, key}) {
 class MenuController extends React.Component {
   // File New
   newTabPanelHandle = (self) => {
-    const activeKey = `newTab${this.props.mainstate.newTabIndex++}`
-    this.props.mainstate.tabPanes.push({ title: `New Tab`, key: activeKey })
+    this.props.mainstate.addPanes()
     message.success(`New page 'New Tab' successfully added`)
   }
   // Open
