@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tabs, message, Modal, Button } from 'antd';
+import { Tabs, message, Modal } from 'antd';
 import { observer, inject } from 'mobx-react'
 import ActionPanel from './Panel'
 

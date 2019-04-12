@@ -1,5 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+/* global d3 */
 import React from 'react'
+import toolFn from '../../utils/ToolFn'
 import {Menu, Dropdown, message } from 'antd'
 import { observer,inject } from 'mobx-react'
 import { Logo } from "../Logo/index";
@@ -18,9 +20,6 @@ const menuList = [{
     'children': [{
       'text': 'device...',
       'handle': 'openFromDevice'
-    }, {
-      'text': 'URL',
-      'handle': 'openFromUrl'
     }]
   }, {
     'text': 'Save',
@@ -55,7 +54,6 @@ const menuList = [{
 const menuOnClick = function({item, key}) {
   const { handle } = item.props
   // 在当前对象Menu中找到 handle方法并执行对应的事件回调, 事件回调接收一个参数, self: MenuItem
-  // console.log(this)
   this[handle](item)
 }
 
@@ -71,7 +69,22 @@ class MenuController extends React.Component {
   }
   // Save
   saveFileHandle = (self) => {
+    let idStr = toolFn.GenNonDuplicateID()
+    let htmlStr = d3.select('#drawing1').html()
+    // 使用Blob 类文件对象
+    var blob = new Blob(
+    [`<mxfile modified='${new Date()}' host='localhost'>
+    <diagram name="Page-1" id="${idStr}">
+    `,
+    htmlStr,
+    '</diagram></mxfile>'
+    ],
+    {type : 'application/xml'})
 
+    var a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = "MapByMathArtSys.xml"  //设定下载名称
+    a.click() //点击触发下载
   }
   // Save As
   saveAsHandle = (self) => {

@@ -51,7 +51,7 @@ const Panel = Collapse.Panel;
                             >
                                 {
                                     e.svgUse.map(
-                                        (svg) => this.createShapeList(null, svg, 38, 38)
+                                        (item) => this.createShapeList(null, item, 38, 38)
                                     )
                                 }
                             </Panel>
@@ -68,8 +68,31 @@ const Panel = Collapse.Panel;
         )
     }
     // 判断是否移入svg绘画区域
-    isEnterSvg = (nX, nY) => {
+    isEnterSvg = (nX, nY, oDiv, svg) => {
+        let isEnter = false
         let sX = this.props.slideWidth
+        let sY = d3.select('#mainContainer').node().offsetTop
+        d3.select(oDiv)
+        .attr('class', "dom-subline")
+        .style('left', `${nX}px`)
+        .style('top', `${nY}px`)
+        if (nX > sX && nY > sY) {
+            // 移入绘画区域后进行相关操作
+            isEnter = true
+            d3.select(oDiv)
+            .attr('class', "dom-subline dom-emphasizeLine")
+        }
+        document.onmouseup = function (e) {
+            let oX = e.clientX
+            let oY = e.clientY
+            if (isEnter) {
+                console.log(oX, oY)
+            }
+            // 移除oDiv元素
+            d3.select(oDiv).remove()
+            document.onmousedown=null;
+            document.onmousemove=null;
+        }
     }
     // 鼠标移入
     mouseShowThumbnail = (e) => {
@@ -121,8 +144,7 @@ const Panel = Collapse.Panel;
     svgItemMouseDownHandle = (e) => {
         // 获取被拖拽的图形
         let cSvg = e.currentTarget.firstElementChild
-        let cSvgId = cSvg.firstElementChild.href.baseVal // xlink:href 的值
-        console.log(cSvgId)
+        console.log(cSvg)
         // 创建div元素，设置样式, 加入dom树
         let oDiv = document.createElement("div")
         d3.select('#root').append(
@@ -130,19 +152,8 @@ const Panel = Collapse.Panel;
         )
         document.onmousemove = (event) => {
             // 更改div位置，让其跟随光标移动
-            this.isEnterSvg(event.clientX, event.clientY)
-            d3.select(oDiv)
-                .attr('class', "dom-subline")
-                .style('left', `${event.clientX}px`)
-                .style('top', `${event.clientY}px`)
+            this.isEnterSvg(event.clientX, event.clientY, oDiv, cSvg)
         }
-        document.onmouseup = function () {
-            // 移除oDiv元素
-            d3.select(oDiv).remove()
-            document.onmousedown=null;
-            document.onmousemove=null;
-        }
-
     }
 }
 // 点击callapse panel的回调
