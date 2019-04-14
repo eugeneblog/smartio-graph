@@ -1,0 +1,8 @@
+<root title="general">
+    <shape name="rect">
+        <g transform="translate(0.5,0.5)" style="visibility: visible;">
+            <rect x="2" y="2" width="37" height="37" fill="#ffffff" stroke="#000000" pointer-events="all">
+            </rect>
+        </g>
+    </shape>
+</root>

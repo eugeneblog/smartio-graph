@@ -21,21 +21,49 @@ const Panel = Collapse.Panel;
             }
         }
     }
-    // 创建图形列表
-    createShapeList = (group, key, sw, sh) => {
-        let items = 
-        <a
+    // 创建图形列表: 使用svg use方法
+    // createShapeList = (group, key, sw, sh) => {
+    //     let items = 
+    //     <a
+    //     onClick={this.svgItemClickHandle}
+    //     onMouseEnter={this.mouseShowThumbnail}
+    //     onMouseLeave={this.mouseHideThumbnail}
+    //     onMouseDown={this.svgItemMouseDownHandle}
+    //     className="svg-item"
+    //     key={key}>
+    //         <svg width={sw} height={sh}>
+    //             <use xlinkHref={`#${key}`}/>
+    //         </svg>
+    //     </a>
+        
+    //     return items
+    // }
+    // 创建图形列表： 使用原始dom
+    createShapeListDom = (id, item, sw, sh) => {
+        let oDiv = document.createElement('div')
+        oDiv.innerHTML = item
+        let ele = oDiv.childNodes[0]
+        let tageName = ele.tagName.toLocaleLowerCase()
+        let nodeObj = {}
+        let nodeDom = [...ele.attributes]
+        nodeDom.map((node) => {
+            nodeObj[node.nodeName] = node.value
+        })
+        let items = <a
         onClick={this.svgItemClickHandle}
         onMouseEnter={this.mouseShowThumbnail}
         onMouseLeave={this.mouseHideThumbnail}
         onMouseDown={this.svgItemMouseDownHandle}
         className="svg-item"
-        key={key}>
+        key={id}>
             <svg width={sw} height={sh}>
-                <use xlinkHref={`#${key}`}/>
+                <g>
+                    {
+                        React.createElement(tageName, {...nodeObj}, null)
+                    }
+                </g>
             </svg>
         </a>
-        
         return items
     }
     render() {
@@ -50,8 +78,8 @@ const Panel = Collapse.Panel;
                                 key={ String(i) }
                             >
                                 {
-                                    e.svgUse.map(
-                                        (item) => this.createShapeList(null, item, 38, 38)
+                                    e.svgGroup.map(
+                                        (item, index) => this.createShapeListDom(index, item, 38, 38)
                                     )
                                 }
                             </Panel>
