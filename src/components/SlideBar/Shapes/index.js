@@ -18,26 +18,10 @@ const Panel = Collapse.Panel;
             thumbanilStyle: {
                 top: 0,
                 left: 0
-            }
+            },
+            defaultActiveKey: ["0"]
         }
     }
-    // 创建图形列表: 使用svg use方法
-    // createShapeList = (group, key, sw, sh) => {
-    //     let items = 
-    //     <a
-    //     onClick={this.svgItemClickHandle}
-    //     onMouseEnter={this.mouseShowThumbnail}
-    //     onMouseLeave={this.mouseHideThumbnail}
-    //     onMouseDown={this.svgItemMouseDownHandle}
-    //     className="svg-item"
-    //     key={key}>
-    //         <svg width={sw} height={sh}>
-    //             <use xlinkHref={`#${key}`}/>
-    //         </svg>
-    //     </a>
-        
-    //     return items
-    // }
     // 创建图形列表： 使用原始dom
     createShapeListDom = (id, item, sw, sh) => {
         let oDiv = document.createElement('div')
@@ -57,7 +41,7 @@ const Panel = Collapse.Panel;
         className="svg-item"
         key={id}>
             <svg width={sw} height={sh}>
-                <g>
+                <g style={{visibility: "visible", transform: "translate(0.5,0.5)"}}>
                     {
                         React.createElement(tageName, {...nodeObj}, null)
                     }
@@ -66,10 +50,25 @@ const Panel = Collapse.Panel;
         </a>
         return items
     }
+    // 初始化
+    init = () => {
+        
+    }
+    // 创建panel
+    createPanelShapesList = () => {
+
+    }
+    // 加载图形
+    loadShapes = (paelId) => {
+        
+    }
+    componentDidMount() {
+        this.init()
+    }
     render() {
         return (
             <div className="collapse-wraper">
-                <Collapse className="collapse" defaultActiveKey={["0"]} onChange={changeCallback}>
+                <Collapse className="collapse" defaultActiveKey={this.state.defaultActiveKey} onChange={changeCallback}>
                     {
                         this.props.shapesList.map(
                             (e,i) =>
@@ -77,11 +76,11 @@ const Panel = Collapse.Panel;
                                 header={ e.header }
                                 key={ String(i) }
                             >
-                                {
+                                {/* {
                                     e.svgGroup.map(
                                         (item, index) => this.createShapeListDom(index, item, 38, 38)
                                     )
-                                }
+                                } */}
                             </Panel>
                         )
                     }
@@ -191,6 +190,8 @@ const Panel = Collapse.Panel;
     }
 }
 // 点击callapse panel的回调
+// 明日改版，改成callapse展开后加载shapes
+// 默认第一个展开
 function changeCallback(key) {
     console.log(key);
 }
