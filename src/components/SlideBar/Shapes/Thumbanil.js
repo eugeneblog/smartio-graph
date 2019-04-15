@@ -9,7 +9,7 @@ class Thumbanil extends Component {
             <div>
                 {
                     this.props.isShow ? <div id="svgThumbanil" className="thumbanil" style={this.props.thumbanilStyle}>
-                        <div className="thumbanil-svg">{ this.props.svg }</div>
+                        <div className="thumbanil-svg"></div>
                         <div className="thumbanil-text">{ this.props.thumbanilText }</div>
                     </div> : null
                 }

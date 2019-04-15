@@ -140,10 +140,17 @@ const Panel = Collapse.Panel;
     mouseHideThumbnail = (e) => {
         this.setState({
             isSHowThumbnail: false
+        }, () => {
+            d3.select('#svgThumbanil .thumbanil-svg svg')
+            .remove()
         })
     }
     // 显示缩略图
     thumbanil = (options) => {
+        d3.select('#svgThumbanil .thumbanil-svg')
+        .append(function() {
+            return options.cSvg.cloneNode(true)
+        })
         // svg: 要显示的图, 缩略图坐标 =  ox: 元素左偏移量 和 oy: 元素顶部距离
         let _default = {
             cSvg: null,
@@ -161,7 +168,6 @@ const Panel = Collapse.Panel;
                 },
                 thumbanilText: options.cSvg.tagName
             })
-            console.log(options)
         }
     }
     // 点击item
