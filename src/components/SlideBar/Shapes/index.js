@@ -72,7 +72,7 @@ const Panel = Collapse.Panel;
         oDiv.innerHTML = jsxStr
         let dom = oDiv.childNodes
         // 通过innerHTML接收字符串的特性将字符串转为dom，通过dom对象进行递归调用，最终输出jsx数组
-        this.recursionDom(dom)
+        return this.recursionDom(dom)
     }
 
     // 递归调用，dom转jsx
@@ -87,9 +87,20 @@ const Panel = Collapse.Panel;
             nodeDom.map((node) => {
                 attrObj[node.nodeName] = node.value
             })
-            jsx.push(
-                React.createElement(tagName, {...attrObj, key: index}, null)
-            )
+            if (!item.children.length) {
+                jsx.push(
+                    React.createElement(tagName, {...attrObj, key: index}, [])
+                )
+            } else {
+                // 如果item有子节点则递归调用
+                jsx.push(
+                    React.createElement(
+                        tagName,
+                        {...attrObj, key: index},
+                        this.recursionDom(item.childNodes)
+                    )
+                )
+            }
         })
         return jsx
     }
