@@ -22,50 +22,6 @@ const Panel = Collapse.Panel;
             defaultActiveKey: ["0"]
         }
     }
-    // 创建图形列表： 使用原始dom
-    createShapeListDom = (id, item, sw, sh) => {
-        let oDiv = document.createElement('div')
-        oDiv.innerHTML = item
-        let ele = oDiv.childNodes[0]
-        let tageName = ele.tagName.toLocaleLowerCase()
-        let nodeObj = {}
-        let nodeDom = [...ele.attributes]
-        nodeDom.map((node) => {
-            nodeObj[node.nodeName] = node.value
-        })
-        let items = <a
-        onClick={this.svgItemClickHandle}
-        onMouseEnter={this.mouseShowThumbnail}
-        onMouseLeave={this.mouseHideThumbnail}
-        onMouseDown={this.svgItemMouseDownHandle}
-        className="svg-item"
-        key={id}>
-            <svg width={sw} height={sh}>
-                <g style={{visibility: "visible", transform: "translate(0.5,0.5)"}}>
-                    {
-                        React.createElement(tageName, {...nodeObj}, null)
-                    }
-                </g>
-            </svg>
-        </a>
-        return items
-    }
-    // 初始化
-    init = () => {
-        // 给默认展开的panel加载图形
-    }
-    // 创建panel
-    createPanelShapesList = (data) => {
-
-    }
-    // 加载图形
-    loadShapes = (paelId) => {
-
-    }
-    // 组件加载后的钩子，在钩子函数里进行对图形列表的初始化操作
-    componentDidMount() {
-        this.init()
-    }
     // 字符串转jsx
     stringToJSX(jsxStr) {
         let oDiv = document.createElement('div')
