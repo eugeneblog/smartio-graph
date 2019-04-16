@@ -52,19 +52,48 @@ const Panel = Collapse.Panel;
     }
     // 初始化
     init = () => {
-        
+        // 给默认展开的panel加载图形
     }
     // 创建panel
-    createPanelShapesList = () => {
+    createPanelShapesList = (data) => {
 
     }
     // 加载图形
     loadShapes = (paelId) => {
-        
+
     }
+    // 组件加载后的钩子，在钩子函数里进行对图形列表的初始化操作
     componentDidMount() {
         this.init()
     }
+    // 字符串转jsx
+    stringToJSX(jsxStr) {
+        let oDiv = document.createElement('div')
+        oDiv.innerHTML = jsxStr
+        let dom = oDiv.childNodes
+        // 通过innerHTML接收字符串的特性将字符串转为dom，通过dom对象进行递归调用，最终输出jsx数组
+        this.recursionDom(dom)
+    }
+
+    // 递归调用，dom转jsx
+    recursionDom(dom) {
+        let jsx = []
+        dom.forEach((item, index) => {
+            // 标签名
+            let tagName = item.tagName.toLocaleLowerCase()
+            // 属性列表
+            let attrObj = {}
+            let nodeDom = [...item.attributes]
+            nodeDom.map((node) => {
+                attrObj[node.nodeName] = node.value
+            })
+            jsx.push(
+                React.createElement(tagName, {...attrObj, key: index}, null)
+            )
+        })
+        return jsx
+    }
+    
     render() {
         return (
             <div className="collapse-wraper">
@@ -76,11 +105,24 @@ const Panel = Collapse.Panel;
                                 header={ e.header }
                                 key={ String(i) }
                             >
-                                {/* {
+                                {
                                     e.svgGroup.map(
-                                        (item, index) => this.createShapeListDom(index, item, 38, 38)
+                                        (item, index) => 
+                                        <a
+                                        onClick={this.svgItemClickHandle}
+                                        onMouseEnter={this.mouseShowThumbnail}
+                                        onMouseLeave={this.mouseHideThumbnail}
+                                        onMouseDown={this.svgItemMouseDownHandle}
+                                        className="svg-item"
+                                        key={index}>
+                                            <svg>
+                                                {
+                                                    this.stringToJSX(item)
+                                                }
+                                            </svg>
+                                        </a>
                                     )
-                                } */}
+                                }
                             </Panel>
                         )
                     }
