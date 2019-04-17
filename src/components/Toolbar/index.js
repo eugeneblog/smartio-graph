@@ -2,6 +2,51 @@ import { Button, Icon, Menu, Dropdown } from 'antd';
 import React,{ Component } from 'react';
 const ButtonGroup = Button.Group;
 
+const toolList = [{
+    id: '1',
+    type: 'drapdown',
+    name: 'layout',
+    icon: 'layout',
+    menu: [{
+        id: '1',
+        text: 'Format Panel',
+        shortCut: 'Cmd+Shift+P'
+    }, {
+        id: '2',
+        text: 'Layers',
+        shortCut: 'Cmd+Shift+L'
+    }, {
+        id: '3',
+        text: 'Outline',
+        shortCut: 'Cmd+Shift+O'
+    }]
+}, '-', {
+    id: '2',
+    type: 'button',
+    name: 'amplification',
+    icon: 'zoom-in'
+}, {
+    id: '3',
+    type: 'button',
+    name: 'narrow',
+    icon: 'zoom-out'
+}, '-', {
+    id: '4',
+    type: 'button',
+    name: 'fallback',
+    icon: 'caret-left'
+}, {
+    id: '5',
+    type: 'button',
+    name: 'fallbackOut',
+    icon: 'caret-left'
+}, '-', {
+    id: '6',
+    type: 'button',
+    namee: 'delete',
+    icon: 'delete'
+}]
+
 class Toolbar extends Component {
     render() {
         const menu = (
@@ -29,7 +74,8 @@ class Toolbar extends Component {
                 <ButtonGroup>
                     <Button size="small"><Icon type="delete" /></Button>
                 </ButtonGroup>
-                <ButtonGroup>
+                <ButtonGroup style={{"float": "right"}}>
+                    <Button size="small"><Icon type="tool" /></Button>
                     <Button size="small"><Icon type="fullscreen" /></Button>
                 </ButtonGroup>
             </div>

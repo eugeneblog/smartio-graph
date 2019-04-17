@@ -7,49 +7,6 @@ import { observer,inject } from 'mobx-react'
 import { Logo } from "../Logo/index";
 const SubMenu = Menu.SubMenu;
 
-const menuList = [{
-  'text': 'file',
-  'overlay': 'fileMenu',
-  'children': [{
-    'text': 'New',
-    'handle': 'newTabPanelHandle',
-    'shortcutKey': 'Ctrl+N'
-  }, {
-    'text': 'Open From',
-    'shortcutKey': 'Ctrl+O',
-    'children': [{
-      'text': 'device...',
-      'handle': 'openFromDevice'
-    }]
-  }, {
-    'text': 'Save',
-    'shortcutKey': 'Ctrl+S',
-    'handle': 'saveFileHandle'
-  }, {
-    'text': 'Save as...',
-    'shortcutKey': 'Ctrl+Alt+S',
-    'handle': 'saveAsHandle'
-  }]
-}, {
-  'text': 'view',
-  'overlay': 'ViewMenu',
-  'children': [{
-    'text': 'Outline',
-    'shortcutKey': 'Ctrl+Shift+P',
-    'handle': 'showOutline',
-    'isUse': false
-  }, {
-    'text': 'Layers',
-    'shortcutKey': 'Ctrl+Shift+L',
-    'handle': 'showLayers',
-    'isUse': false
-  }, {
-    'text': 'Format Panel',
-    'shortcutKey': 'Ctrl+Shift+O',
-    'handle': 'showFormat',
-    'isUse': false
-  }]
-}]
 // 菜单点击事件
 const menuOnClick = function({item, key}) {
   const { handle } = item.props
@@ -138,7 +95,7 @@ class Menus extends MenuController{
           mode="horizontal"
         >
           {
-            menuList.map((e, i) => {
+            this.props.menustate.menuList.map((e, i) => {
               return (
                 <Dropdown
                 overlay={
