@@ -22,12 +22,12 @@ const Panel = Collapse.Panel;
             defaultActiveKey: ["0"]
         }
     }
-    // 字符串转jsx
-    stringToJSX(jsxStr) {
+    
+    createSvgShape(jsxStr) {
+        // 通过innerHTML接收字符串的特性将字符串转为dom，通过dom对象进行递归调用，最终输出jsx数组
         let oDiv = document.createElement('div')
         oDiv.innerHTML = jsxStr
         let dom = oDiv.childNodes
-        // 通过innerHTML接收字符串的特性将字符串转为dom，通过dom对象进行递归调用，最终输出jsx数组
         return this.recursionDom(dom)
     }
 
@@ -84,7 +84,7 @@ const Panel = Collapse.Panel;
                                         key={index}>
                                             <svg>
                                                 {
-                                                    this.stringToJSX(item)
+                                                    this.createSvgShape(item)
                                                 }
                                             </svg>
                                         </a>
@@ -133,10 +133,13 @@ const Panel = Collapse.Panel;
     // 鼠标移入
     mouseShowThumbnail = (e) => {
         // 元素距离页面顶端的位置
+        let target = e.currentTarget.firstElementChild
         let options = {
-            cSvg: e.currentTarget.firstElementChild,
+            cSvg: target,
             SVGoffsetX: this.props.slideWidth,
-            SVGoffsetY: e.currentTarget.offsetTop
+            SVGoffsetY: e.currentTarget.offsetTop,
+            width: target.scrollWidth + 20 + 'px',
+            height: target.scrollHeight + 50 + 'px'
         }
         this.setState({
             isSHowThumbnail: true
@@ -172,7 +175,9 @@ const Panel = Collapse.Panel;
             this.setState({
                 thumbanilStyle: {
                     left: `${options.SVGoffsetX}px`,
-                    top: `${options.SVGoffsetY + 60}px`
+                    top: `${options.SVGoffsetY + 60}px`,
+                    width: options.width,
+                    height: options.height
                 },
                 thumbanilText: options.cSvg.tagName
             })

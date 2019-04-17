@@ -2,6 +2,7 @@
 /* global d3 */
 import React from 'react'
 import ChoiceBox from './ChoiceBox'
+import Graph from '../../Graph/index'
 
 class ActionPanel extends React.Component {
     constructor() {
