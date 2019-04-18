@@ -1,19 +1,12 @@
 // app store 存放页面信息
 import { observable, action } from 'mobx'
-import { getTemplate } from '../../api/index'
 
+// appstate存放视图数据，如视图的显示隐藏，页面的登陆信息等
 class AppState {
     @observable language = ''
     @observable token = ''
-    @observable newTabIndex = 0
-    @observable tabPanes = [
-        { title: 'Tab 1', key: '1', closable: false },
-        { title: 'Tab 2', key: '2' },
-        { title: 'Tab 3', key: '3' },
-    ]
-    @observable _ACTIVEFAULT = [] // 存储页面操作记录，用于撤回
-    @observable _ACTIVEROLLBACK= [] // 每次撤销存放记录，用于取消撤回,数据回滚
     @observable graphTemplate = ''
+    @observable version = '0.0.1 测试版'
 
     @action getToken() {
         return this.token

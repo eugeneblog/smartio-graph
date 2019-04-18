@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane;
 }) @observer class TabPanel extends React.Component {
   constructor(props) {
     super(props);
-    const panes = this.props.mainstate.tabPanes
+    const panes = this.props.actionstate.tabPanes
     this.state = {
       activeKey: panes[0].key,
       panes,
@@ -27,7 +27,7 @@ const TabPane = Tabs.TabPane;
   }
   
   add = () => {
-    this.props.mainstate.addPanes()
+    this.props.actionstate.addPanes()
     message.success(`New page 'New Tab' successfully added`)
   }
 
@@ -50,12 +50,12 @@ const TabPane = Tabs.TabPane;
     let targetKey = this.state.targetKey
     let activeKey = this.state.activeKey;
     let lastIndex;
-    this.props.mainstate.tabPanes.forEach((pane, i) => {
+    this.props.actionstate.tabPanes.forEach((pane, i) => {
       if (pane.key === targetKey) {
         lastIndex = i - 1;
       }
     });
-    const panes = this.props.mainstate.tabPanes.filter(pane => pane.key !== targetKey);
+    const panes = this.props.actionstate.tabPanes.filter(pane => pane.key !== targetKey);
     if (panes.length && activeKey === targetKey) {
       if (lastIndex >= 0) {
         activeKey = panes[lastIndex].key;
@@ -63,7 +63,7 @@ const TabPane = Tabs.TabPane;
         activeKey = panes[0].key;
       }
     }
-    this.props.mainstate.tabPanes = panes
+    this.props.actionstate.tabPanes = panes
     this.setState({ panes, activeKey, visible: false })
   }
 
@@ -86,7 +86,7 @@ const TabPane = Tabs.TabPane;
         key="tabs"
       >
         {
-          this.props.mainstate.tabPanes.map(
+          this.props.actionstate.tabPanes.map(
                 pane => 
                 <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
                     <ActionPanel paneId = {`drawing${pane.key}`}/>

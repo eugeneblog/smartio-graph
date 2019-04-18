@@ -1,8 +1,9 @@
 import { observable } from 'mobx'
 
+// menu菜单的数据
 class MenuState {
     @observable menuList = [{
-        'text': 'file',
+        'text': 'File',
         'overlay': 'fileMenu',
         'children': [{
           'text': 'New',
@@ -25,7 +26,7 @@ class MenuState {
           'handle': 'saveAsHandle'
         }]
       }, {
-        'text': 'view',
+        'text': 'View',
         'overlay': 'ViewMenu',
         'children': [{
           'text': 'Outline',
@@ -43,6 +44,15 @@ class MenuState {
           'handle': 'showFormat',
           'isUse': false
         }]
+    }, {
+      'text': 'Help',
+      'overlay': 'HelpMenu',
+      'children': [{
+        'text': 'Version',
+        'shortcutKey': '0.0.1',
+        'handle': 'showVersion',
+        'isUse': false
+      }]
     }]
 }
 

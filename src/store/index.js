@@ -2,6 +2,7 @@ import mainstate from './modules/app'
 import userstate from './modules/user'
 import shapes from './modules/shapes'
 import menustate from './modules/menu'
+import actionstate from './modules/action'
 
 class Store {
     get getStoreAll () {
@@ -9,7 +10,8 @@ class Store {
             mainstate,
             userstate,
             shapes,
-            menustate
+            menustate,
+            actionstate
         }
     }
 }

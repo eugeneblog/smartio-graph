@@ -126,8 +126,9 @@ const Panel = Collapse.Panel;
             }
             // 移除oDiv元素
             d3.select(oDiv).remove()
-            document.onmousedown=null;
-            document.onmousemove=null;
+            document.onmousedown=null
+            document.onmousemove=null
+            document.onmouseup = null
         }
     }
     // 鼠标移入

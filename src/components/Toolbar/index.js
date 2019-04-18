@@ -81,6 +81,9 @@ class Toolbar extends Component {
             </div>
         )
     }
+    createToolBar = () => {
+        
+    }
 }
 
 export default Toolbar

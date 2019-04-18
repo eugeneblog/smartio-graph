@@ -17,7 +17,7 @@ const menuOnClick = function({item, key}) {
 class MenuController extends React.Component {
   // File New
   newTabPanelHandle = (self) => {
-    this.props.mainstate.addPanes()
+    this.props.actionstate.addPanes()
     message.success(`New page 'New Tab' successfully added`)
   }
   // Open
@@ -57,6 +57,10 @@ class MenuController extends React.Component {
   }
   // Format Panel
   showFormat = (self) => {
+
+  }
+
+  showVersion = (self) => {
 
   }
 }
