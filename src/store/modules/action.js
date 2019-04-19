@@ -31,14 +31,17 @@ class ActionState {
         { title: 'Tab 2', key: '2' },
         { title: 'Tab 3', key: '3' },
     ]
+    /*
+    past: 过去的数据 , 以数组的形式存放数据, 每次操作之后将数据存放在过去栈，以便与撤回 ,length <= 10 ,可以撤回10次
+    present: 现在的数据，不管撤销还是重做操作，都是从栈里依次将数据取出然后替换
+    future: 未来的数据 , 撤销之后的数据存放在未来栈，以便重做操作
+     */
     @observable operation = {
         past: [],
         present: [],
         future: []
     }
     @observable newTabIndex = 0
-    @observable _ACTIVEFAULT = [] // 存储页面操作记录，用于撤回
-    @observable _ACTIVEROLLBACK= [] // 每次撤销存放记录，用于取消撤回,数据回滚
     @action addPanes() {
         const activeKey = `newTab${this.newTabIndex++}`
         this.tabPanes.push({ title: 'New Tab', key: activeKey })
@@ -47,7 +50,7 @@ class ActionState {
     // 撤销
     @action undo() {
         let len = this.operation.past.length
-        let present = this.operation.present
+        let present = this.operation.present[0]
         if (len) {
             let past = this.operation.past[len - 1]
             // 移除 past 中的最后一个元素
@@ -61,7 +64,7 @@ class ActionState {
     // 重做
     @action redo() {
         let len = this.operation.future.length
-        let present = this.operation.present
+        let present = this.operation.present[0]
         if (len) {
             let futurn = this.operation.future[len - 1]
             // 移除future中的第一个元素
