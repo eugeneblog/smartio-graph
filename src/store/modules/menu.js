@@ -3,29 +3,41 @@ import { observable } from 'mobx'
 // menu菜单的数据
 class MenuState {
     @observable menuList = [{
-        'text': 'File',
-        'overlay': 'fileMenu',
+      'text': 'File',
+      'overlay': 'fileMenu',
+      'children': [{
+        'text': 'New',
+        'handle': 'newTabPanelHandle',
+        'shortcutKey': 'Ctrl+N'
+      }, {
+        'text': 'Open From',
+        'shortcutKey': 'Ctrl+O',
         'children': [{
-          'text': 'New',
-          'handle': 'newTabPanelHandle',
-          'shortcutKey': 'Ctrl+N'
-        }, {
-          'text': 'Open From',
-          'shortcutKey': 'Ctrl+O',
-          'children': [{
-            'text': 'device...',
-            'handle': 'openFromDevice'
-          }]
-        }, {
-          'text': 'Save',
-          'shortcutKey': 'Ctrl+S',
-          'handle': 'saveFileHandle'
-        }, {
-          'text': 'Save as...',
-          'shortcutKey': 'Ctrl+Alt+S',
-          'handle': 'saveAsHandle'
+          'text': 'device...',
+          'handle': 'openFromDevice'
         }]
       }, {
+        'text': 'Save',
+        'shortcutKey': 'Ctrl+S',
+        'handle': 'saveFileHandle'
+      }, {
+        'text': 'Save as...',
+        'shortcutKey': 'Ctrl+Alt+S',
+        'handle': 'saveAsHandle'
+      }]
+    }, {
+      'text': 'Editor',
+      'overlay': 'EditorMenu',
+      'children': [{
+        'text': 'undo',
+        'handle': 'undoActionHandle',
+        'shortcutKey': 'Ctrl+Z'
+      }, {
+        'text': 'redo',
+        'handle': 'redoActionHandle',
+        'shortcutKey': 'Ctrl+Alt+Z'
+      }]
+    }, {
         'text': 'View',
         'overlay': 'ViewMenu',
         'children': [{

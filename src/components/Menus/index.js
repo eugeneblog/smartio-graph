@@ -63,6 +63,16 @@ class MenuController extends React.Component {
   showVersion = (self) => {
 
   }
+
+  // 撤销
+  undoActionHandle = (self) => {
+    this.props.actionstate.undo()
+  }
+
+  // 重做
+  redoActionHandle = (self) => {
+    this.props.actionstate.redo()
+  }
 }
 
 // 因为菜单是总控，基本上所有操作都是更改数据模型, 所以必须注入页面所有数据
