@@ -46,24 +46,10 @@ const TabPane = Tabs.TabPane;
 
   handleOk = (e) => {
     let targetKey = this.state.targetKey
-    let activeKey = this.state.activeKey;
-    let lastIndex;
-    let pane = this.props.actionstate.getPresent.tabPanes
-    pane.forEach((pane, i) => {
-      if (pane.key === targetKey) {
-        lastIndex = i - 1;
-      }
-    });
-    const panes = pane.filter(pane => pane.key !== targetKey);
-    if (panes.length && activeKey === targetKey) {
-      if (lastIndex >= 0) {
-        activeKey = panes[lastIndex].key;
-      } else {
-        activeKey = panes[0].key;
-      }
-    }
-    this.props.actionstate.setPanes(panes)
-    this.setState({ activeKey, visible: false })
+    let activeKey = this.state.activeKey
+    let data = this.props.actionstate.removePanes(targetKey, activeKey)
+    console.log(data)
+    this.setState({ ...data })
   }
 
   handleCancel = (e) => {
@@ -85,7 +71,7 @@ const TabPane = Tabs.TabPane;
         key="tabs"
       >
         {
-          this.props.actionstate.getPresent.tabPanes.map(
+          this.props.panes.map(
                 pane => 
                 <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
                     <ActionPanel paneId = {`drawing${pane.key}`}/>

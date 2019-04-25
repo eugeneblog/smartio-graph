@@ -25,12 +25,6 @@ class ActionState {
     [addFuture](data) {
         this.future.push(data)
     }
-
-    @observable tabPanes = [
-        { title: 'Tab 1', key: '1', closable: false },
-        { title: 'Tab 2', key: '2' },
-        { title: 'Tab 3', key: '3' },
-    ]
     /*
     past: 过去的数据 , 以数组的形式存放数据, 每次操作之后将数据存放在过去栈，以便与撤回 ,length <= 10 ,可以撤回10次
     present: 现在的数据，不管撤销还是重做操作，都是从栈里依次将数据取出然后替换
@@ -54,6 +48,26 @@ class ActionState {
     }
     @action setPanes(data) {
         this.getPresent.tabPanes = data
+    }
+    @action removePanes(targetKey, activeKey) {
+        // 移除pane
+        let lastIndex;
+        let pane = this.getPresent.tabPanes
+        pane.forEach((pane, i) => {
+        if (pane.key === targetKey) {
+            lastIndex = i - 1;
+        }
+        });
+        const panes = pane.filter(pane => pane.key !== targetKey);
+        if (panes.length && activeKey === targetKey) {
+        if (lastIndex >= 0) {
+            activeKey = panes[lastIndex].key;
+        } else {
+            activeKey = panes[0].key;
+        }
+        }
+        this.setPanes(panes)
+        return { activeKey, visible: false }
     }
     get getPresent() {
         return this.present[0]
