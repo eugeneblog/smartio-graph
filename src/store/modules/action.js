@@ -49,9 +49,11 @@ class ActionState {
     @observable newTabIndex = 0
     @action addPanes() {
         const panes = this.getPresent
-        const activeKey = `newTab${this.newTabIndex++}`
+        const activeKey = `newTab${panes.newTabIndex++}`
         panes.tabPanes.push({ title: 'New Tab', key: activeKey })
-        this.tabPanes.push({ title: 'New Tab', key: activeKey })
+    }
+    @action setPanes(data) {
+        this.getPresent.tabPanes = data
     }
     get getPresent() {
         return this.present[0]
