@@ -13,12 +13,17 @@ const { Content } = Layout
             
         }
     }
+    onChange = (activeKey) => {
+        this.props.actionstate.changeKey(activeKey)
+    }
     render() {
         return (
             <Content id="mainContainer" className="action"
             >
                 <TabPanel
-                panes={this.props.actionstate.getPresent.tabPanes}
+                panes={this.props.actionstate.present.tabPanes}
+                activeKey={this.props.actionstate.present.activeKey}
+                onChange={this.onChange}
                 />
             </Content>
         )

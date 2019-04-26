@@ -11,7 +11,7 @@ class ActionState {
     }
     // 私有方法
     [init]() {
-        this.present.push(this.tabPanes)
+        
     }
     // 改变当前操作数据
     [changePresent](data) {
@@ -31,28 +31,32 @@ class ActionState {
     future: 未来的数据 , 撤销之后的数据存放在未来栈，以便重做操作
      */
     @observable past = []
-    @observable present = [{
+    @observable present = {
         tabPanes: [
             { title: 'Tab 1', key: '1', closable: false },
             { title: 'Tab 2', key: '2' },
             { title: 'Tab 3', key: '3' },
         ],
+        activeKey: "1",
         newTabIndex: 0
-    }]
+    }
     @observable future = []
     @observable newTabIndex = 0
     @action addPanes() {
-        const panes = this.getPresent
-        const activeKey = `newTab${panes.newTabIndex++}`
-        panes.tabPanes.push({ title: 'New Tab', key: activeKey })
+        const panes = this.present.tabPanes
+        const activeKey = `newTab${this.present.newTabIndex++}`
+        panes.push({ title: 'New Tab', key: activeKey })
+    }
+    @action changeKey(key) {
+        this.present.activeKey = key
     }
     @action setPanes(data) {
-        this.getPresent.tabPanes = data
+        this.present.tabPanes = data
     }
     @action removePanes(targetKey, activeKey) {
         // 移除pane
         let lastIndex;
-        let pane = this.getPresent.tabPanes
+        let pane = this.present.tabPanes
         pane.forEach((pane, i) => {
         if (pane.key === targetKey) {
             lastIndex = i - 1;

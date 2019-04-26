@@ -11,13 +11,9 @@ const TabPane = Tabs.TabPane;
   constructor(props) {
     super(props);
     this.state = {
-      activeKey: this.props.actionstate.getPresent.tabPanes[0].key,
+      activeKey: this.props.activeKey,
       visible: false 
     };
-  }
-
-  onChange = (activeKey) => {
-    this.setState({ activeKey });
   }
 
   onEdit = (targetKey, action) => {
@@ -46,9 +42,8 @@ const TabPane = Tabs.TabPane;
 
   handleOk = (e) => {
     let targetKey = this.state.targetKey
-    let activeKey = this.state.activeKey
+    let activeKey = this.props.activeKey
     let data = this.props.actionstate.removePanes(targetKey, activeKey)
-    console.log(data)
     this.setState({ ...data })
   }
 
@@ -63,8 +58,8 @@ const TabPane = Tabs.TabPane;
     return [
       <Tabs
         className="action-tabs"
-        onChange={this.onChange}
-        activeKey={this.state.activeKey}
+        onChange={this.props.onChange}
+        activeKey={this.props.activeKey}
         type="editable-card"
         onEdit={this.onEdit}
         tabPosition="bottom"
