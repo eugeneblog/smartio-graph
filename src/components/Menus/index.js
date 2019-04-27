@@ -132,6 +132,9 @@ class Menus extends MenuController{
       </div>
     )
   }
+  componentDidUpdate() {
+    console.log('update')
+  }
 }
 
 export default Menus
