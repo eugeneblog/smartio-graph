@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-keys */
 import { observable, action } from 'mobx'
 
 // shapes存放所有已加载的图形

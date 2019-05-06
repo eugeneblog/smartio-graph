@@ -76,17 +76,16 @@ class ActionState {
     get getPresent() {
         return this.present[0]
     }
-    // 撤销
     @action undo() {
         let len = this.past.length
-        let present = this.present[0]
+        let present = this.present
         if (len) {
             let past = this.past[len - 1]
-            // 移除 past 中的最后一个元素
+            // 删除 past 最后一个元素
             this.past.pop()
-            // 将上一步移除的元素赋予 present
-            this.present.splice(0, 0, past)
-            // 将原来的 present 插入到 future 的最前面。
+            // 将最后一个元素拿出来替换成当前present，达到撤回的目的
+            this.present = past
+            // 将原来的present插入到future 的最前面，用于还原操作
             this.future.unshift(present)
         } else {
             return 0
@@ -95,13 +94,13 @@ class ActionState {
     // 重做
     @action redo() {
         let len = this.future.length
-        let present = this.present[0]
+        let present = this.present
         if (len) {
             let futurn = this.future[len - 1]
             // 移除future中的第一个元素
             this.future.shift()
             // 将上一步移除的元素赋予present
-            this.present.splice(0, 0, futurn)
+            this.present = futurn
             // 将原来的present追加到past后面
             this.past.push(present)
         } else {

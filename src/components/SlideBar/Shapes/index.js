@@ -22,7 +22,7 @@ const Panel = Collapse.Panel;
             defaultActiveKey: ["0"]
         }
     }
-    
+    // 创建shape
     createSvgShape(jsxStr) {
         // 通过innerHTML接收字符串的特性将字符串转为dom，通过dom对象进行递归调用，最终输出jsx数组
         let oDiv = document.createElement('div')
@@ -30,7 +30,23 @@ const Panel = Collapse.Panel;
         let dom = oDiv.childNodes
         return this.recursionDom(dom)
     }
-
+    // 创建辅助线，使用单例模式确保只有一个dom对象
+    createSvgSubline() {
+        let unique
+        function getInstance(params) {
+            if (unique === undefined) {
+                unique = Construct()
+            }
+            return unique
+        }
+        function Construct() {
+            let oDiv = document.createElement("div")
+            d3.select(oDiv)
+            .attr('class', "dom-subline")
+            return oDiv
+        }
+        return getInstance()
+    }
     // 递归调用，dom转jsx
     recursionDom(dom) {
         let jsx = []
@@ -40,7 +56,7 @@ const Panel = Collapse.Panel;
             // 属性列表
             let attrObj = {}
             let nodeDom = [...item.attributes]
-            nodeDom.map((node) => {
+            nodeDom.forEach((node) => {
                 attrObj[node.nodeName] = node.value
             })
             if (!item.children.length) {
@@ -76,10 +92,10 @@ const Panel = Collapse.Panel;
                                     e.svgGroup.map(
                                         (item, index) => 
                                         <a
-                                        onClick={this.svgItemClickHandle}
                                         onMouseEnter={this.mouseShowThumbnail}
                                         onMouseLeave={this.mouseHideThumbnail}
                                         onMouseDown={this.svgItemMouseDownHandle}
+                                        onMouseUp={this.svgItemMouseUpHandle}
                                         className="svg-item"
                                         key={index}>
                                             <svg>
@@ -94,7 +110,7 @@ const Panel = Collapse.Panel;
                         )
                     }
                 </Collapse>
-                <Thumbanil 
+                <Thumbanil
                 thumbanilStyle={this.state.thumbanilStyle} 
                 thumbanilText={this.state.thumbanilText} 
                 isShow={this.state.isSHowThumbnail}
@@ -187,14 +203,25 @@ const Panel = Collapse.Panel;
     // 点击item
     svgItemClickHandle = (e) => {
         // click handle
+        // let oDiv = this.createSvgSubline()
+    }
+    // 鼠标松开
+    svgItemMouseUpHandle = (e) => {
+        // 移除oDiv元素
+        console.log('鼠标松开')
+        let oDiv = this.createSvgSubline()
+        d3.select(oDiv).remove()
     }
     // 鼠标按下增加拖拽辅助线
     svgItemMouseDownHandle = (e) => {
         // 获取被拖拽的图形
         let cSvg = e.currentTarget.firstElementChild
-        console.log(cSvg)
+        console.log('鼠标按下')
         // 创建div元素，设置样式, 加入dom树
-        let oDiv = document.createElement("div")
+        let oDiv = this.createSvgSubline()
+        d3.select(oDiv)
+        .style('left', `${e.clientX}px`)
+        .style('top', `${e.clientY}px`)
         d3.select('#root').append(
             () => oDiv
         )
