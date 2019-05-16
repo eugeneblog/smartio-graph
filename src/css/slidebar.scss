@@ -12,6 +12,10 @@
     &:hover {
         background: #f3f3f3;
     }
+    &:active {
+        opacity: 0.6;
+        background: #f3f3f3;
+    }
     svg {
         width: 42px;
         height: 42px;

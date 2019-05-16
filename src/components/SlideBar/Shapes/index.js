@@ -45,7 +45,9 @@ const Panel = Collapse.Panel;
             .attr('class', "dom-subline")
             return oDiv
         }
-        return getInstance()
+        return {
+            getInstance
+        }
     }
     // 递归调用，dom转jsx
     recursionDom(dom) {
@@ -95,7 +97,6 @@ const Panel = Collapse.Panel;
                                         onMouseEnter={this.mouseShowThumbnail}
                                         onMouseLeave={this.mouseHideThumbnail}
                                         onMouseDown={this.svgItemMouseDownHandle}
-                                        onMouseUp={this.svgItemMouseUpHandle}
                                         className="svg-item"
                                         key={index}>
                                             <svg>
@@ -128,6 +129,7 @@ const Panel = Collapse.Panel;
         .attr('class', "dom-subline")
         .style('left', `${nX}px`)
         .style('top', `${nY}px`)
+        .style('display', 'block')
         if (nX > sX && nY > sY) {
             // 移入绘画区域后进行相关操作
             isEnter = true
@@ -205,29 +207,28 @@ const Panel = Collapse.Panel;
         // click handle
         // let oDiv = this.createSvgSubline()
     }
-    // 鼠标松开
-    svgItemMouseUpHandle = (e) => {
-        // 移除oDiv元素
-        console.log('鼠标松开')
-        let oDiv = this.createSvgSubline()
-        d3.select(oDiv).remove()
-    }
     // 鼠标按下增加拖拽辅助线
     svgItemMouseDownHandle = (e) => {
         // 获取被拖拽的图形
         let cSvg = e.currentTarget.firstElementChild
-        console.log('鼠标按下')
         // 创建div元素，设置样式, 加入dom树
-        let oDiv = this.createSvgSubline()
+        let callback = this.createSvgSubline()
+        let oDiv = callback.getInstance()
         d3.select(oDiv)
         .style('left', `${e.clientX}px`)
         .style('top', `${e.clientY}px`)
+        .style('display', 'none')
         d3.select('#root').append(
             () => oDiv
         )
         document.onmousemove = (event) => {
             // 更改div位置，让其跟随光标移动
             this.isEnterSvg(event.clientX, event.clientY, oDiv, cSvg)
+        }
+        document.onmouseup = (event) => {
+            // 移除oDiv元素
+            d3.select(oDiv).remove()
+            document.onmouseup = null
         }
     }
 }

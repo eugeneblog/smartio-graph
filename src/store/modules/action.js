@@ -88,6 +88,7 @@ class ActionState {
             // 将原来的present插入到future 的最前面，用于还原操作
             this.future.unshift(present)
         } else {
+            console.log('没有可用数据')
             return 0
         }
     }
@@ -104,6 +105,7 @@ class ActionState {
             // 将原来的present追加到past后面
             this.past.push(present)
         } else {
+            console.log('没有可用数据')
             return 0
         }
     }
