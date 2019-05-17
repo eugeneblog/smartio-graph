@@ -1,53 +1,12 @@
 import { Button, Icon, Menu, Dropdown } from 'antd';
-import React,{ Component } from 'react';
+import React from 'react';
+import ToolbarController from './Controller'
+import { observer, inject } from 'mobx-react'
+// import { instanceOf } from 'prop-types';
 const ButtonGroup = Button.Group;
 
-// const toolList = [{
-//     id: '1',
-//     type: 'drapdown',
-//     name: 'layout',
-//     icon: 'layout',
-//     menu: [{
-//         id: '1',
-//         text: 'Format Panel',
-//         shortCut: 'Cmd+Shift+P'
-//     }, {
-//         id: '2',
-//         text: 'Layers',
-//         shortCut: 'Cmd+Shift+L'
-//     }, {
-//         id: '3',
-//         text: 'Outline',
-//         shortCut: 'Cmd+Shift+O'
-//     }]
-// }, '-', {
-//     id: '2',
-//     type: 'button',
-//     name: 'amplification',
-//     icon: 'zoom-in'
-// }, {
-//     id: '3',
-//     type: 'button',
-//     name: 'narrow',
-//     icon: 'zoom-out'
-// }, '-', {
-//     id: '4',
-//     type: 'button',
-//     name: 'fallback',
-//     icon: 'caret-left'
-// }, {
-//     id: '5',
-//     type: 'button',
-//     name: 'fallbackOut',
-//     icon: 'caret-left'
-// }, '-', {
-//     id: '6',
-//     type: 'button',
-//     namee: 'delete',
-//     icon: 'delete'
-// }]
-
-class Toolbar extends Component {
+@inject(allStore => allStore.appstate)  @observer
+class Toolbar extends ToolbarController {
     render() {
         const menu = (
             <Menu>
@@ -64,25 +23,22 @@ class Toolbar extends Component {
                     </Dropdown>
                 </ButtonGroup>
                 <ButtonGroup>
-                    <Button size="small"><Icon type="zoom-in" /></Button>
-                    <Button size="small"><Icon type="zoom-out" /></Button>
+                    <Button onClick={this.zoomInHandle} size="small"><Icon type="zoom-in"/></Button>
+                    <Button onClick={this.zoomOutHandle} size="small"><Icon type="zoom-out"/></Button>
                 </ButtonGroup>
                 <ButtonGroup>
-                    <Button size="small"><Icon type="caret-left" /></Button>
-                    <Button size="small"><Icon type="caret-right" /></Button>
+                    <Button onClick={this.undoHandle} size="small"><Icon type="caret-left" /></Button>
+                    <Button onClick={this.redoHandle} size="small"><Icon type="caret-right" /></Button>
                 </ButtonGroup>
                 <ButtonGroup>
-                    <Button size="small"><Icon type="delete" /></Button>
+                    <Button onClick={this.deleteHandle} size="small"><Icon type="delete" /></Button>
                 </ButtonGroup>
                 <ButtonGroup style={{"float": "right"}}>
-                    <Button size="small"><Icon type="tool" /></Button>
-                    <Button size="small"><Icon type="fullscreen" /></Button>
+                    <Button onClick={this.showProperty} size="small"><Icon type="tool" /></Button>
+                    <Button onClick={this.changeFullscree} size="small"><Icon type="fullscreen" /></Button>
                 </ButtonGroup>
             </div>
         )
-    }
-    createToolBar = () => {
-        
     }
 }
 

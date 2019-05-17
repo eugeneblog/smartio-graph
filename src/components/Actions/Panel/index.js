@@ -23,9 +23,11 @@ class ActionPanel extends React.Component {
         return(
             <div 
             id={this.props.paneId} 
-            className="action-container"
-            onMouseDown = {this.drawMousedownHandle}>
-                <svg>
+            className="action-container">
+                <svg 
+                width={this.state.sWidth} 
+                height={this.state.sHeight} 
+                onMouseDown = {this.drawMousedownHandle}>
                     <g className="svgPanel">
                         <g className="grid">
                             {
@@ -38,8 +40,7 @@ class ActionPanel extends React.Component {
                 </svg>
                 <ChoiceBox
                 isShow = {this.state.choiceBoxIsShow}
-                choiceBoxStyle = {this.state.choiceStyle}
-                />
+                choiceBoxStyle = {this.state.choiceStyle}/>
             </div>
         )
     }
@@ -74,9 +75,6 @@ class ActionPanel extends React.Component {
             )
         }
         return lines
-    }
-    componentDidMount() {
-        Snap(`#${this.props.paneId} > svg`)
     }
     drawMousedownHandle = (e) => {
         let _this = this
