@@ -30,12 +30,26 @@ class ActionPanel extends React.Component {
                 onMouseDown = {this.drawMousedownHandle}>
                     <g className="svgPanel">
                         <g className="grid">
+                            <desc>网格线</desc>
                             {
                                 /* 绘制网格线 */
-                                this.createDtawLines(this.state.gridLength)
+                                this.createDrawLines(this.state.gridLength)
                             }
                         </g>
-                        <circle fill="red" r="50" cx="100" cy="100"></circle>
+                        <g className="baseLayer">
+                            <g className="editCon">
+                                <desc>编辑控件</desc>
+                            </g>
+                            <g 
+                            className="eleGroup"
+                            style={{cursor: "move"}}
+                            onMouseEnter = {this.eventMouseEnterHandle}
+                            onMouseDown = {this.eventMouseDownHandle}
+                            onClick = {this.eventClickHandle}
+                            >
+                                <desc>基础元素</desc>
+                            </g>
+                        </g>
                     </g>
                 </svg>
                 <ChoiceBox
@@ -44,8 +58,40 @@ class ActionPanel extends React.Component {
             </div>
         )
     }
+    componentDidMount() {
+        let s = Snap(`#${this.props.paneId} > svg .eleGroup`)
+        // this.init(s)
+        let bigCircle = s.circle(150,150,150)
+        bigCircle.attr({
+            fill: "#bada55"
+        })
+        var smallCircle = s.circle(100, 150, 70);
+        // Lets put this small circle and another one into a group:
+        s.group(smallCircle, s.circle(200, 150, 70));
+
+    }
+    init(svg) {
+        console.log(svg)
+    }
+    // 元素拖动
+    eventMouseDownHandle = (e) => {
+        this.clearEventBubble(e)
+        console.log(e.target)
+    }
+
+    // 鼠标停留在元素上
+    eventMouseEnterHandle = (e) => {
+        this.clearEventBubble(e)
+        console.log(e.target)
+    }
+
+    // 元素点击
+    eventClickHandle = (e) => {
+        console.log(e.target)
+    }
+    
     // 绘制网格
-    createDtawLines(gridLength) {
+    createDrawLines(gridLength) {
         let _this = this
         let Wlen = Math.ceil(_this.state.sWidth / gridLength)
         let Hlen = Math.ceil(_this.state.sHeight / gridLength)
@@ -76,12 +122,14 @@ class ActionPanel extends React.Component {
         }
         return lines
     }
+
     drawMousedownHandle = (e) => {
+        // e.persist()
         let _this = this
         let mouseOn = false
         let startX = 0
         let startY = 0
-        clearEventBubble(e)
+        _this.clearEventBubble(e)
         if (e.buttons !== 1) return
         // if (e.buttons !== 1 || e.which !== 1) return;
         mouseOn = true;
@@ -100,7 +148,7 @@ class ActionPanel extends React.Component {
         })
         document.onmousemove = function (e) {
             if (!mouseOn) return;
-            clearEventBubble(e);
+            _this.clearEventBubble(e);
             // var selectContainer = document.getElementById(`${_this.props.paneId}`);
             let _x = e.clientX - _sWidth;
             let _y = e.clientY - _nHeight;
@@ -117,19 +165,22 @@ class ActionPanel extends React.Component {
         }
         document.onmouseup = function (e) {
             if (!mouseOn) return;
-            clearEventBubble(e);
+            _this.clearEventBubble(e);
             _this.setState({
                 choiceBoxIsShow: false
             })
             mouseOn = false;
         };
-        function clearEventBubble (e) {
-            if (e.stopPropagation) e.stopPropagation();
-            else e.cancelBubble = true;
-      
-            if (e.preventDefault) e.preventDefault();
-            else e.returnValue = false;
-        }
+        
+    }
+
+    // 阻止事件默认行为，防止事件继续传播执行
+    clearEventBubble (e) {
+        if (e.stopPropagation) e.stopPropagation();
+        else e.cancelBubble = true;
+  
+        if (e.preventDefault) e.preventDefault();
+        else e.returnValue = false;
     }
 }
 

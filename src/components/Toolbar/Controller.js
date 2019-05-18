@@ -34,9 +34,6 @@ class ToolbarController extends React.Component {
     changeFullscree = (e) => {
 
     }
-    componentDidMount() {
-        console.log(this)
-    }
 }
 
 export default ToolbarController
