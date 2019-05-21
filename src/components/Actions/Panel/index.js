@@ -9,8 +9,9 @@ class ActionPanel extends React.Component {
     constructor() {
         super()
         this.state = {
-            sWidth: 2000,
-            sHeight: 1800,
+            sWidth: 2001,
+            sHeight: 1801,
+            scrollTop: 0,
             gridLength: 20,
             choiceStyle: {
                 top: 0,
@@ -25,13 +26,14 @@ class ActionPanel extends React.Component {
         return(
             <div 
             id={this.props.paneId}
+            style={{overflow: 'auto', position: 'absolute', left: '0', top: '0', right: '0', bottom: '0'}}
             className="action-container">
                 <svg
-                width={this.state.sWidth} 
-                height={this.state.sHeight} 
-                style={{padding: '10px'}}
+                width={2000} 
+                height={1800}
+                style={{left: '0px', top: '0px', width: '100%', height: '100%', display: 'block', minWidth: '3000px', minHeight: '2800px', position: 'absolute', backgroundImage: 'none'}}
                 onMouseDown = {this.drawMousedownHandle}>
-                    <g className="svgPanel">
+                    <g className="svgPanel"  transform="translate(500,500)" style={{position: 'absolute', top: '20px', left: '20px', right: '20px', bottom: '20px'}} width={ this.state.sWidth} height={this.state.sHeight}>
                         <g className="grid">
                             <desc>网格线</desc>
                             {
@@ -56,7 +58,7 @@ class ActionPanel extends React.Component {
                             {
                                 this.createEditCon(this.state.selectSvg)
                             }
-                        </g>
+                        </g>     
                     </g>
                 </svg>
                 <ChoiceBox
@@ -156,6 +158,7 @@ class ActionPanel extends React.Component {
     // 绘制网格
     createDrawLines(gridLength) {
         let _this = this
+        // 网格的思路是 x 轴和 y 轴画直线， svg画板的宽度 除以 网格间距 等于 线段数量。其他同理，自己加减乘除
         let Wlen = Math.ceil(_this.state.sWidth / gridLength)
         let Hlen = Math.ceil(_this.state.sHeight / gridLength)
         let lines = []
@@ -192,9 +195,11 @@ class ActionPanel extends React.Component {
         let mouseOn = false
         let startX = 0
         let startY = 0
+        // 单击页面空白处，删除所有选择框
         _this.setState({
             selectSvg: []
         })
+        // 阻止事件继续传播，防止事件冲突
         _this.clearEventBubble(e)
         if (e.buttons !== 1) return
         // if (e.buttons !== 1 || e.which !== 1) return;
