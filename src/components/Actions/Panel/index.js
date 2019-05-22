@@ -26,7 +26,7 @@ class ActionPanel extends React.Component {
         return(
             <div 
             id={this.props.paneId}
-            style={{overflow: 'auto', position: 'absolute', left: '0', top: '0', right: '0', bottom: '0'}}
+            style={{overflow: 'scroll', position: 'absolute', left: '0', top: '0', right: '0', bottom: '0', background: '#f8f9fa'}}
             className="action-container">
                 <svg
                 width={2000} 
@@ -35,11 +35,15 @@ class ActionPanel extends React.Component {
                 onMouseDown = {this.drawMousedownHandle}>
                     <g className="svgPanel"  transform="translate(500,500)" style={{position: 'absolute', top: '20px', left: '20px', right: '20px', bottom: '20px'}} width={ this.state.sWidth} height={this.state.sHeight}>
                         <g className="grid">
-                            <desc>网格线</desc>
+                            <desc>网格背景</desc>
+                            <rect width={this.state.sWidth} height={this.state.sHeight} fill="#ffffff"></rect>
                             {
                                 /* 绘制网格线 */
                                 this.createDrawLines(this.state.gridLength)
                             }
+                        </g>
+                        <g>
+                            <desc>辅助线</desc>
                         </g>
                         <g className="baseLayer">
                             <desc>基础视图</desc>
@@ -125,7 +129,7 @@ class ActionPanel extends React.Component {
             )
             return editConTpl
         }
-        console.log(selectSvg)
+        // console.log(selectSvg)
         let editResult = selectSvg.map((element, index) => {
             let attrs = element.getBBox()
             return editConTpl(index, attrs.x, attrs.y, attrs.width, attrs.height)
@@ -190,7 +194,7 @@ class ActionPanel extends React.Component {
     }
 
     drawMousedownHandle = (e) => {
-        // e.persist()
+        e.persist()
         let _this = this
         let mouseOn = false
         let startX = 0
@@ -207,9 +211,14 @@ class ActionPanel extends React.Component {
          // _nHeight: navbar的高度, _sWidth: slide的宽度 ，鼠标点击的距离 - slide的宽度 = _x鼠标与画板左边缘的距离，同理_y 是鼠标距离画板顶部的距离
         let _nHeight = d3.select('#mainContainer').node().offsetTop
         let _sWidth = d3.select('#slidrContainer').node().offsetWidth
-        // 调整坐标原点为容器左上角
-        startX = e.clientX - _sWidth;
-        startY = e.clientY - _nHeight;
+        // 获取滚动距离
+        let _scrollTop = d3.select(`#${this.props.paneId}`).node().scrollTop
+        let _scrollLeft = d3.select(`#${this.props.paneId}`).node().scrollLeft
+        // 调整坐标原点为容器左上角 起始点： 当前点击的坐标 - 工具栏宽高 + 屏幕滚动距离
+        startX = e.clientX - _sWidth + _scrollLeft;
+        startY = e.clientY - _nHeight + _scrollTop;
+        // console.log(_scrollTop, _scrollLeft)
+        // console.log(startX + _scrollLeft, startY + _scrollTop)
         _this.setState({
             choiceBoxIsShow: true,
             choiceStyle: {
@@ -221,8 +230,8 @@ class ActionPanel extends React.Component {
             if (!mouseOn) return;
             _this.clearEventBubble(e);
             // var selectContainer = document.getElementById(`${_this.props.paneId}`);
-            let _x = e.clientX - _sWidth;
-            let _y = e.clientY - _nHeight;
+            let _x = e.clientX - _sWidth + _scrollLeft;
+            let _y = e.clientY - _nHeight + _scrollTop;
             // 框选区域的top值为 当前点击的top值与第一次点击的top值直接的最小值，left同理
             // 框选区域的宽度为，第一次点击的clientX值减去移动后的clientX值的绝对值, 例如，（100 - 200） = -100：宽度为100px, （200-100）= 100：宽度也是100px，所以必须是绝对值
             _this.setState({
