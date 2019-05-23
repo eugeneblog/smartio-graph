@@ -19,7 +19,8 @@ class ActionPanel extends React.Component {
                 width: 100,
                 height: 100
             },
-            selectSvg: []
+            selectSvg: [],
+            EditEle: []
         }
     }
     render() {
@@ -33,7 +34,7 @@ class ActionPanel extends React.Component {
                 height={1800}
                 style={{left: '0px', top: '0px', width: '100%', height: '100%', display: 'block', minWidth: '3000px', minHeight: '2800px', position: 'absolute', backgroundImage: 'none'}}
                 onMouseDown = {this.drawMousedownHandle}>
-                    <g className="svgPanel"  transform="translate(500,500)" style={{position: 'absolute', top: '20px', left: '20px', right: '20px', bottom: '20px'}} width={ this.state.sWidth} height={this.state.sHeight}>
+                    <g className="svgPanel"  transform="translate(500,500)" width={ this.state.sWidth} height={this.state.sHeight}>
                         <g className="grid">
                             <desc>网格背景</desc>
                             <rect width={this.state.sWidth} height={this.state.sHeight} fill="#ffffff"></rect>
@@ -45,17 +46,16 @@ class ActionPanel extends React.Component {
                         <g>
                             <desc>辅助线</desc>
                         </g>
-                        <g className="baseLayer">
+                        <g className="baseLayer"
+                        style={{cursor: "move"}}
+                        onMouseEnter = {this.eventMouseEnterHandle}
+                        onMouseDown = {this.eventMouseDownHandle}
+                        onClick = {this.eventClickHandle}
+                        >
                             <desc>基础视图</desc>
-                            <g
-                            className="eleGroup"
-                            style={{cursor: "move"}}
-                            onMouseEnter = {this.eventMouseEnterHandle}
-                            onMouseDown = {this.eventMouseDownHandle}
-                            onClick = {this.eventClickHandle}
-                            >
-                                <desc>基础元素</desc>
-                            </g>
+                            {
+                                this.createEditElement(this.state.EditEle)
+                            }
                         </g>
                         <g className="editCon">
                             <desc>编辑控件</desc>
@@ -72,9 +72,10 @@ class ActionPanel extends React.Component {
         )
     }
     componentDidMount() {
-        let s = Snap(`#${this.props.paneId} > svg .eleGroup`)
+        let s = Snap(`#${this.props.paneId} > svg .baseLayer`)
         // this.init(s)
         let bigCircle = s.circle(150,150,150)
+        s.group(bigCircle)
         // console.log(bigCircle.node.getBBox())
         bigCircle.attr({
             fill: "#bada55"
@@ -192,9 +193,16 @@ class ActionPanel extends React.Component {
         }
         return lines
     }
+    
+    // 创建元素
+    createEditElement(elements) {
+        elements.map((item) => {
+            return item
+        })
+    }
 
     drawMousedownHandle = (e) => {
-        e.persist()
+        // e.persist()
         let _this = this
         let mouseOn = false
         let startX = 0
@@ -217,8 +225,6 @@ class ActionPanel extends React.Component {
         // 调整坐标原点为容器左上角 起始点： 当前点击的坐标 - 工具栏宽高 + 屏幕滚动距离
         startX = e.clientX - _sWidth + _scrollLeft;
         startY = e.clientY - _nHeight + _scrollTop;
-        // console.log(_scrollTop, _scrollLeft)
-        // console.log(startX + _scrollLeft, startY + _scrollTop)
         _this.setState({
             choiceBoxIsShow: true,
             choiceStyle: {
@@ -246,12 +252,33 @@ class ActionPanel extends React.Component {
         document.onmouseup = function (e) {
             if (!mouseOn) return;
             _this.clearEventBubble(e);
+            // 获取选择框的区域， l: 选择框距离容器左边的距离 t：距离容器上方的距离 w: 自身的宽度 h： 自身的高度
+            let selDiv = d3.select(`#${_this.props.paneId} .choicebox`).node()
+            let eleField = d3.select(`#${_this.props.paneId} .baseLayer`).node().children
+            let l = selDiv.offsetLeft
+            let t = selDiv.offsetTop
+            let w = selDiv.offsetWidth
+            let h = selDiv.offsetHeight
+            for (let i = 0; i < eleField.length; i++) {
+                const element = eleField[i];
+                if (element.getBBox) {
+                    let attrs = element.getBBox()
+                    attrs['x'] += 500
+                    attrs['y'] += 500
+                    let sl = attrs['width'] + attrs['x']
+                    let st = attrs['height'] + attrs['y']
+                    if (sl > l && st > t && attrs['x'] < l + w && attrs['y'] < t + h) {
+                        _this.state.selectSvg.push(element)
+                    }
+                }
+            }
+            // console.log(l, t, w, h)
+            // 获取框选的元素
             _this.setState({
                 choiceBoxIsShow: false
             })
             mouseOn = false;
-        };
-        
+        }
     }
 
     // 阻止事件默认行为，防止事件继续传播执行
