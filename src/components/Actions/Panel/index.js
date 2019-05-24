@@ -3,6 +3,7 @@
 /* global d3 */
 import React from 'react'
 import ChoiceBox from './ChoiceBox'
+import { func } from 'prop-types';
 // import Graph from '../../Graph/index'
 
 class ActionPanel extends React.Component {
@@ -50,7 +51,6 @@ class ActionPanel extends React.Component {
                         style={{cursor: "move"}}
                         onMouseEnter = {this.eventMouseEnterHandle}
                         onMouseDown = {this.eventMouseDownHandle}
-                        onClick = {this.eventClickHandle}
                         >
                             <desc>基础视图</desc>
                             {
@@ -83,10 +83,16 @@ class ActionPanel extends React.Component {
         var smallCircle = s.circle(100, 150, 70);
         // Lets put this small circle and another one into a group:
         s.group(smallCircle, s.circle(200, 150, 70));
-
+        // 改变滚动条位置
+        let sDiv = Snap(`#${this.props.paneId}`).node
+        this.changeScrollTo(sDiv, 450, 480)
     }
     init(svg) {
         console.log(svg)
+    }
+    changeScrollTo(box, x, y) {
+        // 重新计算坐标
+        box.scrollTo(x, y)
     }
     createEditCon = (selectSvg) => {
         function editConTpl(key, x, y, w, h) {
@@ -138,26 +144,50 @@ class ActionPanel extends React.Component {
         return editResult
     }
     // 元素拖动
-    eventMouseDownHandle = (e) => {
-        this.clearEventBubble(e)
-        let target = e.target
-        // console.log(target)
-        Snap(e.target).attr({
-            stroke: "#000"
+    eventMouseDownHandle = (event) => {
+        event.persist()
+        let _this = this
+        let _startX = event.clientX
+        let _startY = event.clientY
+        let target = event.target
+        let elementAttr = target.getBBox()
+        console.log(elementAttr)
+        _this.clearEventBubble(event)
+        _this.setState({
+            selectSvg: [target]
+        },function() {
+            document.onmousemove = function(e) {
+                _this.clearEventBubble(e)
+                console.log(e.clientX - _startX, e.clientY - _startY)
+                Snap(target).attr({
+                    x: elementAttr['x'] += e.clientX - _startX,
+                    y: elementAttr['y'] += e.clientY - _startY
+                })
+            }
+            document.onmouseup = function(e) {
+                _this.clearEventBubble(e)
+                // console.log(_endX, _endY)
+                // console.log(Snap(target).node.getBBox())
+                
+                document.onmousemove = null
+                document.onmouseup = null
+            }
         })
     }
 
     // 鼠标停留在元素上
     eventMouseEnterHandle = (e) => {
-        this.clearEventBubble(e)
+        // this.clearEventBubble(e)
         // console.log(e.target)
     }
 
     // 元素点击
     eventClickHandle = (e) => {
-       this.setState({
-           selectSvg: [e.target]
-       })
+        let target = e.target
+        this.setState({
+           selectSvg: [target]
+        })
+        console.log('click')
     }
     
     // 绘制网格
