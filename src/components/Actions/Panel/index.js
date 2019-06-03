@@ -3,7 +3,7 @@
 /* global d3 */
 import React from 'react'
 import ChoiceBox from './ChoiceBox'
-import { func } from 'prop-types';
+// import { func } from 'prop-types';
 // import Graph from '../../Graph/index'
 
 class ActionPanel extends React.Component {
@@ -21,7 +21,8 @@ class ActionPanel extends React.Component {
                 height: 100
             },
             selectSvg: [],
-            EditEle: []
+            EditEle: [],
+            isShowAuxiliaryLine: false
         }
     }
     render() {
@@ -62,6 +63,10 @@ class ActionPanel extends React.Component {
                             {
                                 this.createEditCon(this.state.selectSvg)
                             }
+                            {/* <g className="Auxiliaryline">
+                                <desc>拖拽辅助线</desc>
+                                <rect></rect>
+                            </g> */}
                         </g>     
                     </g>
                 </svg>
@@ -145,34 +150,71 @@ class ActionPanel extends React.Component {
     }
     // 元素拖动
     eventMouseDownHandle = (event) => {
-        event.persist()
+        // 阻止事件继续传播
+        this.clearEventBubble(event)
         let _this = this
+        // 获取要移动的目标元素
+        let target = event.target
+        // 获取元素的group
+        let tGroup = target.parentElement
+        // 获取元素属性
+        // let attrs =  tGroup.getBoundingClientRect()
+        // 原始属性
+        let attr = tGroup.getBBox()
+        // 坐标起始点
         let _startX = event.clientX
         let _startY = event.clientY
-        let target = event.target
-        let elementAttr = target.getBBox()
-        console.log(elementAttr)
-        _this.clearEventBubble(event)
-        _this.setState({
-            selectSvg: [target]
-        },function() {
+        // 创建拖拽辅助线，在目标移动的时候显示
+        let auxCallback = _this.createAuxiliaryLine(attr['x'], attr['y'], attr['width'], attr['height'])
+        // 将目标元素放入选中栈
+        this.setState({
+            selectSvg: [tGroup]
+        }, function() {
+            // setState执行完成之后有个callback，我们在这里执行之后的操作
             document.onmousemove = function(e) {
                 _this.clearEventBubble(e)
-                console.log(e.clientX - _startX, e.clientY - _startY)
-                Snap(target).attr({
-                    x: elementAttr['x'] += e.clientX - _startX,
-                    y: elementAttr['y'] += e.clientY - _startY
+                let aux = auxCallback.getInstance()
+                // 移动公式： 当前目标元素坐标 + 移动距离
+                aux.attr({
+                    x: attr['x'] + (e.clientX - _startX),
+                    y: attr['y'] + (e.clientY - _startY)
                 })
             }
             document.onmouseup = function(e) {
                 _this.clearEventBubble(e)
-                // console.log(_endX, _endY)
-                // console.log(Snap(target).node.getBBox())
-                
+                // 销毁辅助线
+                auxCallback.getInstance().remove()
+                // 销毁document上注册的事件
                 document.onmousemove = null
                 document.onmouseup = null
             }
         })
+    }
+
+    // 使用闭包的技巧创建拖拽辅助线， 有且唯一的对象
+    createAuxiliaryLine = (x, y, w, h) => {
+        let unique
+        let _this = this
+        function getInstance() {
+            if (unique === undefined) {
+                unique = Construct(x, y, w, h)
+            }
+            return unique
+        }
+        function Construct(x, y, w, h) {
+            let s = Snap(`#${_this.props.paneId} .editCon`)
+            let aux = s.rect(x, y, w, h)
+            aux.attr({
+                fillOpacity: '0',
+                stroke: 'black',
+                storkeWidth: '3',
+                strokeDasharray: '5'
+            })
+            return aux
+        }
+        return {
+            getInstance
+        }
     }
 
     // 鼠标停留在元素上
