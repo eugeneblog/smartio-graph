@@ -158,14 +158,16 @@ class ActionPanel extends React.Component {
         // 获取元素的group
         let tGroup = target.parentElement
         // 获取元素属性
-        // let attrs =  tGroup.getBoundingClientRect()
+        let attrs =  tGroup.getBoundingClientRect()
+        console.log(attrs)
         // 原始属性
         let attr = tGroup.getBBox()
         // 坐标起始点
         let _startX = event.clientX
         let _startY = event.clientY
+        console.log()
         // 创建拖拽辅助线，在目标移动的时候显示
-        let auxCallback = _this.createAuxiliaryLine(attr['x'], attr['y'], attr['width'], attr['height'])
+        let auxCallback = _this.createAuxiliaryLine(attrs['x'], attrs['y'], attrs['width'], attrs['height'])
         // 将目标元素放入选中栈
         this.setState({
             selectSvg: [tGroup]
@@ -184,6 +186,14 @@ class ActionPanel extends React.Component {
                 _this.clearEventBubble(e)
                 // 销毁辅助线
                 auxCallback.getInstance().remove()
+                // 根据辅助线坐标更改目标元素坐标
+                Snap(target).attr({
+                    transform: `translate(${attr['x'] + (e.clientX - _startX)}, ${attr['y'] + (e.clientY - _startY)})`
+                })
+                // 重绘辅助线
+                _this.setState({
+                    selectSvg: [tGroup]
+                })
                 // 销毁document上注册的事件
                 document.onmousemove = null
                 document.onmouseup = null
@@ -215,6 +225,11 @@ class ActionPanel extends React.Component {
         return {
             getInstance
         }
+    }
+
+    // 根据元素类型改变坐标
+    changeElementCoordinates = (type, x, y) => {
+
     }
 
     // 鼠标停留在元素上
