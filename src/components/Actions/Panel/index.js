@@ -79,13 +79,13 @@ class ActionPanel extends React.Component {
     componentDidMount() {
         let s = Snap(`#${this.props.paneId} > svg .baseLayer`)
         // this.init(s)
-        let bigCircle = s.circle(150,150,150)
+        let bigCircle = s.rect(150,150,150,150)
         s.group(bigCircle)
         // console.log(bigCircle.node.getBBox())
         bigCircle.attr({
             fill: "#bada55"
         })
-        var smallCircle = s.circle(100, 150, 70);
+        var smallCircle = s.circle(70, 70, 70);
         // Lets put this small circle and another one into a group:
         s.group(smallCircle, s.circle(200, 150, 70));
         // 改变滚动条位置
@@ -187,9 +187,10 @@ class ActionPanel extends React.Component {
                 // 销毁辅助线
                 auxCallback.getInstance().remove()
                 // 根据辅助线坐标更改目标元素坐标
-                Snap(target).attr({
-                    transform: `translate(${attr['x'] + (e.clientX - _startX)}, ${attr['y'] + (e.clientY - _startY)})`
-                })
+                _this.changeElementCoordinates(tGroup, e.clientX - _startX, e.clientY - _startY)
+                // Snap(target).attr({
+                //     transform: `translate(${attr['x'] + (e.clientX - _startX)}, ${attr['y'] + (e.clientY - _startY)})`
+                // })
                 // 重绘辅助线
                 _this.setState({
                     selectSvg: [tGroup]
@@ -227,9 +228,53 @@ class ActionPanel extends React.Component {
         }
     }
 
-    // 根据元素类型改变坐标
-    changeElementCoordinates = (type, x, y) => {
+    // 根据元素类型改变坐标，不使用translate改变坐标，translate不会改变元素坐标，而是改变整个坐标系，所以不方便计算
+    changeElementCoordinates = (ele, moveX, moveY) => {
+        let eleArr = ele.children
+        for (let index = 0; index < eleArr.length; index++) {
+            const element = eleArr[index]
+            const attr = element.getBBox()
+            elementChange(element, element.nodeName, attr)
+            console.log(attr)
+        }
+        // 每个基础元素坐标属性不一样，使用switch判断
+        function elementChange(ele, type, attr) {
+            switch (type) {
+                case 'rect':
+                    Snap(ele).attr({
+                        x: attr['x'] + moveX,
+                        y: attr['y'] + moveY
+                    })
+                    break;
+                case 'circle':
+                    // 圆的坐标比较特殊, 以圆心为基准点
+                    Snap(ele).attr({
+                        cx: ele.cx.baseVal.value + moveX,
+                        cy: ele.cy.baseVal.value + moveY
+                    })
+                    break;
+                case 'ellipse':
+                    Snap(ele).attr({
+                        cx: ele.cx.baseVal.value + moveX,
+                        cy: ele.cy.baseVal.value + moveY
+                    })
+                    break;
+                case 'line':
 
+                    break;
+                case 'polyline':
+
+                    break;
+                case 'polygon':
+
+                    break;
+                case 'path':
+
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     // 鼠标停留在元素上
