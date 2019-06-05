@@ -36,12 +36,15 @@ const TabPane = Tabs.TabPane;
           this.props.panes.map(
                 pane => 
                 <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-                    <ActionPanel paneId = {`drawing${pane.key}`}/>
+                    <ActionPanel 
+                    paneId = {`drawing${pane.key}`}
+                    paneData= {pane}
+                    />
                 </TabPane>
             )
         }
       </Tabs>
-    ];
+    ]
   }
 }
 

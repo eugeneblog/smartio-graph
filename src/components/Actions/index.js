@@ -1,7 +1,7 @@
 import React from 'react';
 import TabPanel from './TapPanel'
 import { observer, inject } from 'mobx-react'
-import { Layout, Modal, message } from 'antd';
+import { Layout, Modal, message, Tabs } from 'antd';
 const { Content } = Layout
 
 @inject(allStore => {
@@ -63,6 +63,7 @@ const { Content } = Layout
                     onRemove={this.onRemove}
                     onAdd={this.onAdd}
                 />
+
                 <Modal
                     title="Waring"
                     visible={this.state.visible}

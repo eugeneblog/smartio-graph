@@ -7,22 +7,17 @@ import ChoiceBox from './ChoiceBox'
 // import Graph from '../../Graph/index'
 
 class ActionPanel extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            sWidth: 2001,
-            sHeight: 1801,
             scrollTop: 0,
-            gridLength: 20,
             choiceStyle: {
                 top: 0,
                 left: 0,
                 width: 100,
                 height: 100
             },
-            selectSvg: [],
-            EditEle: [],
-            isShowAuxiliaryLine: false
+            selectSvg: this.props.paneData.selectSvg
         }
     }
     render() {
@@ -36,13 +31,13 @@ class ActionPanel extends React.Component {
                 height={1800}
                 style={{left: '0px', top: '0px', width: '100%', height: '100%', display: 'block', minWidth: '3000px', minHeight: '2800px', position: 'absolute', backgroundImage: 'none'}}
                 onMouseDown = {this.drawMousedownHandle}>
-                    <g className="svgPanel"  transform="translate(500,500)" width={ this.state.sWidth} height={this.state.sHeight}>
+                    <g className="svgPanel"  transform="translate(500,500)" width={ this.props.paneData.sWidth } height={ this.props.paneData.sHeight }>
                         <g className="grid">
                             <desc>网格背景</desc>
-                            <rect width={this.state.sWidth} height={this.state.sHeight} fill="#ffffff"></rect>
+                            <rect width={ this.props.paneData.sWidth } height={ this.props.paneData.sHeight } fill="#ffffff"></rect>
                             {
                                 /* 绘制网格线 */
-                                this.createDrawLines(this.state.gridLength)
+                                this.createDrawLines(this.props.paneData.gridLength)
                             }
                         </g>
                         <g>
@@ -52,13 +47,16 @@ class ActionPanel extends React.Component {
                         style={{cursor: "move"}}
                         onMouseEnter = {this.eventMouseEnterHandle}
                         onMouseDown = {this.eventMouseDownHandle}
+                        onDoubleClick = {this.eventDbclickHandle}
                         >
                             <desc>基础视图</desc>
                             {
-                                this.createEditElement(this.state.EditEle)
+                                this.createEditElement(this.props.paneData.EditEle)
                             }
                         </g>
-                        <g className="editCon">
+                        <g className="editCon"
+                        onMouseDown = {this.editMouseDownHandle}
+                        >
                             <desc>编辑控件</desc>
                             {
                                 this.createEditCon(this.state.selectSvg)
@@ -77,6 +75,7 @@ class ActionPanel extends React.Component {
         )
     }
     componentDidMount() {
+        console.log(this.props)
         let s = Snap(`#${this.props.paneId} > svg .baseLayer`)
         // this.init(s)
         let bigCircle = s.rect(150,150,150,150)
@@ -151,6 +150,7 @@ class ActionPanel extends React.Component {
     // 元素拖动
     eventMouseDownHandle = (event) => {
         // 阻止事件继续传播
+        
         this.clearEventBubble(event)
         let _this = this
         // 获取要移动的目标元素
@@ -159,47 +159,54 @@ class ActionPanel extends React.Component {
         let tGroup = target.parentElement
         // 获取元素属性
         let attrs =  tGroup.getBoundingClientRect()
-        console.log(attrs)
         // 原始属性
         let attr = tGroup.getBBox()
         // 坐标起始点
         let _startX = event.clientX
         let _startY = event.clientY
-        console.log()
         // 创建拖拽辅助线，在目标移动的时候显示
         let auxCallback = _this.createAuxiliaryLine(attrs['x'], attrs['y'], attrs['width'], attrs['height'])
         // 将目标元素放入选中栈
-        this.setState({
+        _this.setState({
             selectSvg: [tGroup]
-        }, function() {
-            // setState执行完成之后有个callback，我们在这里执行之后的操作
-            document.onmousemove = function(e) {
-                _this.clearEventBubble(e)
-                let aux = auxCallback.getInstance()
-                // 移动公式： 当前目标元素坐标 + 移动距离
-                aux.attr({
-                    x: attr['x'] + (e.clientX - _startX),
-                    y: attr['y'] + (e.clientY - _startY)
-                })
-            }
-            document.onmouseup = function(e) {
-                _this.clearEventBubble(e)
-                // 销毁辅助线
-                auxCallback.getInstance().remove()
-                // 根据辅助线坐标更改目标元素坐标
-                _this.changeElementCoordinates(tGroup, e.clientX - _startX, e.clientY - _startY)
-                // Snap(target).attr({
-                //     transform: `translate(${attr['x'] + (e.clientX - _startX)}, ${attr['y'] + (e.clientY - _startY)})`
-                // })
-                // 重绘辅助线
-                _this.setState({
-                    selectSvg: [tGroup]
-                })
-                // 销毁document上注册的事件
-                document.onmousemove = null
-                document.onmouseup = null
-            }
         })
+        // _this.props.paneData.selectSvg.push(tGroup)
+        // setState执行完成之后有个callback，我们在这里执行之后的操作
+        document.onmousemove = function(e) {
+            _this.clearEventBubble(e)
+            let aux = auxCallback.getInstance()
+            // 移动公式： 当前目标元素坐标 + 移动距离
+            aux.attr({
+                x: attr['x'] + (e.clientX - _startX),
+                y: attr['y'] + (e.clientY - _startY)
+            })
+        }
+        document.onmouseup = function(e) {
+            _this.clearEventBubble(e)
+            // 销毁辅助线
+            auxCallback.getInstance().remove()
+            // 根据辅助线坐标更改目标元素坐标
+            _this.changeElementCoordinates(tGroup, e.clientX - _startX, e.clientY - _startY)
+            // 重绘辅助线
+            _this.setState({
+                selectSvg: [tGroup]
+            })
+            // _this.props.paneData.selectSvg.set(0, tGroup)
+            // 销毁document上注册的事件
+            document.onmousemove = null
+            document.onmouseup = null
+        }
+    }
+    
+    // 元素双击事件
+    eventDbclickHandle = (event) => {
+        console.log('dbClick')
+    }
+
+    // 鼠标停留在元素上
+    eventMouseEnterHandle = (e) => {
+        // this.clearEventBubble(e)
+        // console.log(e.target)
     }
 
     // 使用闭包的技巧创建拖拽辅助线， 有且唯一的对象
@@ -235,7 +242,6 @@ class ActionPanel extends React.Component {
             const element = eleArr[index]
             const attr = element.getBBox()
             elementChange(element, element.nodeName, attr)
-            console.log(attr)
         }
         // 每个基础元素坐标属性不一样，使用switch判断
         function elementChange(ele, type, attr) {
@@ -277,27 +283,39 @@ class ActionPanel extends React.Component {
         }
     }
 
-    // 鼠标停留在元素上
-    eventMouseEnterHandle = (e) => {
-        // this.clearEventBubble(e)
-        // console.log(e.target)
-    }
-
     // 元素点击
-    eventClickHandle = (e) => {
-        let target = e.target
-        this.setState({
-           selectSvg: [target]
-        })
-        console.log('click')
+    // eventClickHandle = (e) => {
+    //     let target = e.target
+    //     this.setState({
+    //         selectSvg: [target]
+    //     })
+    // }
+    // 编辑控件事件
+    editMouseDownHandle = (event) => {
+        this.clearEventBubble(event)
+        let _this = this
+        // let target = event.target.parentElement
+        let _startX = event.clientX
+        let _startY = event.clientY
+        document.onmousemove = function(e) {
+            _this.clearEventBubble(e)
+            let moveX = e.clientX - _startX
+            let moveY = e.clientY - _startY
+            console.log(moveX, moveY)
+        }
+        document.onmouseup = function(e) {
+            _this.clearEventBubble(e)
+            document.onmousemove = null
+            document.onmouseup = null
+        }
     }
     
     // 绘制网格
     createDrawLines(gridLength) {
         let _this = this
         // 网格的思路是 x 轴和 y 轴画直线， svg画板的宽度 除以 网格间距 等于 线段数量。其他同理，自己加减乘除
-        let Wlen = Math.ceil(_this.state.sWidth / gridLength)
-        let Hlen = Math.ceil(_this.state.sHeight / gridLength)
+        let Wlen = Math.ceil(_this.props.paneData.sWidth / gridLength)
+        let Hlen = Math.ceil(_this.props.paneData.sHeight / gridLength)
         let lines = []
         for (let i = 0; i < Wlen; i++) {
             lines.push(
@@ -306,7 +324,7 @@ class ActionPanel extends React.Component {
                 x1 = {i * gridLength}
                 y1 = {0}
                 x2 = {i * gridLength}
-                y2 = {_this.state.sHeight}
+                y2 = {_this.props.paneData.sHeight}
                 stroke = "#e5e5e5"
                 ></line>
             )
@@ -317,7 +335,7 @@ class ActionPanel extends React.Component {
                 key = {`h${i}`}
                 x1 = {0}
                 y1 = {i * gridLength}
-                x2 = {_this.state.sWidth}
+                x2 = {_this.props.paneData.sWidth}
                 y2 = {i * gridLength}
                 stroke = "#e5e5e5"
                 ></line>
@@ -328,9 +346,7 @@ class ActionPanel extends React.Component {
     
     // 创建元素
     createEditElement(elements) {
-        elements.map((item) => {
-            return item
-        })
+        
     }
 
     drawMousedownHandle = (e) => {
@@ -343,6 +359,7 @@ class ActionPanel extends React.Component {
         _this.setState({
             selectSvg: []
         })
+        // _this.props.paneData.selectSvg = []
         // 阻止事件继续传播，防止事件冲突
         _this.clearEventBubble(e)
         if (e.buttons !== 1) return
@@ -400,7 +417,8 @@ class ActionPanel extends React.Component {
                     let sl = attrs['width'] + attrs['x']
                     let st = attrs['height'] + attrs['y']
                     if (sl > l && st > t && attrs['x'] < l + w && attrs['y'] < t + h) {
-                        _this.state.selectSvg.push(element)
+                        // _this.state.selectSvg.push(element)
+                        _this.props.paneData.selectSvg.push(element)
                     }
                 }
             }

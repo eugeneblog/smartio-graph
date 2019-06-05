@@ -32,11 +32,19 @@ class ActionState {
      */
     @observable past = []
     @observable present = {
-        tabPanes: [
-            { title: 'Tab 1', key: '1', closable: false },
-            { title: 'Tab 2', key: '2' },
-            { title: 'Tab 3', key: '3' },
-        ],
+        tabPanes: [{ 
+            title: 'Tab 1', key: '1', closable: false , sWidth: 2001, sHeight: 1801, scrollTop: 0, gridLength: 20,           
+            selectSvg: [],
+            EditEle: {}
+        },{ 
+            title: 'Tab 2', key: '2',  sWidth: 2001, sHeight: 1801, scrollTop: 0, gridLength: 20,
+            selectSvg: [],
+            EditEle: {}
+        },{ 
+            title: 'Tab 3', key: '3', sWidth: 2001, sHeight: 1801, scrollTop: 0, gridLength: 20,
+            selectSvg: [],
+            EditEle: {},
+        }],
         activeKey: "1",
         newTabIndex: 0
     }
@@ -45,7 +53,16 @@ class ActionState {
     @action addPanes() {
         const panes = this.present.tabPanes
         const activeKey = `newTab${this.present.newTabIndex++}`
-        panes.push({ title: 'New Tab', key: activeKey })
+        panes.push({ 
+            title: 'New Tab',
+            key: activeKey,
+            sWidth: 2001,
+            sHeight: 1801,
+            scrollTop: 0,
+            gridLength: 20,
+            selectSvg: [],
+            EditEle: {}
+        })
     }
     @action changeKey(key) {
         this.present.activeKey = key
