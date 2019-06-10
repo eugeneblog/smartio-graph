@@ -294,13 +294,26 @@ class ActionPanel extends React.Component {
     editMouseDownHandle = (event) => {
         this.clearEventBubble(event)
         let _this = this
-        // let target = event.target.parentElement
+        let target = event.target.parentElement
         let _startX = event.clientX
         let _startY = event.clientY
+        // 计算当前编辑的元素是哪个
+        let editCon = d3.select(`#${_this.props.paneId} .editCon`).selectAll('g').nodes()
+        let index = editCon.indexOf(target)
+        let element = _this.state.selectSvg[Math.floor(index / 10)]
+        let attrs = element.getBBox()
         document.onmousemove = function(e) {
             _this.clearEventBubble(e)
             let moveX = e.clientX - _startX
             let moveY = e.clientY - _startY
+            // 根据元素类型缩放元素
+            Snap(element.children[0]).attr({
+                width: attrs['width'] + moveX,
+                height: attrs['height'] + moveY
+            })
+            _this.setState({
+                selectSvg: [element]
+            })
             console.log(moveX, moveY)
         }
         document.onmouseup = function(e) {
@@ -417,12 +430,11 @@ class ActionPanel extends React.Component {
                     let sl = attrs['width'] + attrs['x']
                     let st = attrs['height'] + attrs['y']
                     if (sl > l && st > t && attrs['x'] < l + w && attrs['y'] < t + h) {
-                        // _this.state.selectSvg.push(element)
-                        _this.props.paneData.selectSvg.push(element)
+                        _this.state.selectSvg.push(element)
+                        // _this.props.paneData.selectSvg.push(element)
                     }
                 }
             }
-            // console.log(l, t, w, h)
             // 获取框选的元素
             _this.setState({
                 choiceBoxIsShow: false
