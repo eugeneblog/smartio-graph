@@ -75,7 +75,6 @@ class ActionPanel extends React.Component {
         )
     }
     componentDidMount() {
-        console.log(this.props)
         let s = Snap(`#${this.props.paneId} > svg .baseLayer`)
         // this.init(s)
         let bigCircle = s.rect(150,150,150,150)
@@ -283,6 +282,54 @@ class ActionPanel extends React.Component {
         }
     }
 
+    // 缩放元素
+    changeElementZoom = (ele, attrs, moveX, moveY, direction, geometric) => {
+        let len = ele.length
+        if (len === 1) {
+            elementChange(ele[0].nodeName, ele[0])
+        } else {
+            for (let index = 0; index < len; index++) {
+                const element = ele[index];
+                elementChange(element.nodeName, element)
+            }
+        }
+        function elementChange(type, element) {
+            switch (type) {
+                case 'rect':
+                    if (direction === 'se-resize' || direction === 's-resize' || direction === 'e-resize') {
+                        Snap(element).attr({
+                            width: attrs['width'] + moveX,
+                            height: attrs['height'] + moveY
+                        })
+                    } else if (direction === 'nw-resize' || direction === 'w-resize' || direction === 'n-resize') {
+                        Snap(element).attr({
+                            x: attrs['x'] + moveX,
+                            y: attrs['y'] + moveY,
+                            width: attrs['width'] - moveX,
+                            height: attrs['height'] - moveY
+                        })
+                    } else if (direction === 'ne-resize') {
+                        Snap(element).attr({
+                            y: attrs['y'] + moveY,
+                            width: attrs['width'] + moveX,
+                            height: attrs['height'] - moveY
+                        })
+                    } else if (direction === 'sw-resize') {
+                        Snap(element).attr({
+                            x: attrs['x'] + moveX,
+                            width: attrs['width'] - moveX,
+                            height: attrs['height'] + moveY
+                        })
+                    }
+                    break;
+                case 'circle':
+                    console.log('circle')
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     // 元素点击
     // eventClickHandle = (e) => {
     //     let target = e.target
@@ -300,6 +347,7 @@ class ActionPanel extends React.Component {
         // 计算当前编辑的元素是哪个
         let editCon = d3.select(`#${_this.props.paneId} .editCon`).selectAll('g').nodes()
         let index = editCon.indexOf(target)
+        let direction = getComputedStyle(target,null)['cursor']
         let element = _this.state.selectSvg[Math.floor(index / 10)]
         let attrs = element.getBBox()
         document.onmousemove = function(e) {
@@ -307,14 +355,10 @@ class ActionPanel extends React.Component {
             let moveX = e.clientX - _startX
             let moveY = e.clientY - _startY
             // 根据元素类型缩放元素
-            Snap(element.children[0]).attr({
-                width: attrs['width'] + moveX,
-                height: attrs['height'] + moveY
-            })
+            _this.changeElementZoom(element.children, attrs, moveX, moveY, direction)
             _this.setState({
                 selectSvg: [element]
             })
-            console.log(moveX, moveY)
         }
         document.onmouseup = function(e) {
             _this.clearEventBubble(e)
