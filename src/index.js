@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 import Store from './store/index'
+import './mock'
 import './css/index.scss'
 
 // 引入d3.js svg.js 用于操作svg图形
