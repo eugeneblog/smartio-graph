@@ -7,6 +7,9 @@ class AppState {
     @observable token = ''
     @observable graphTemplate = ''
     @observable version = '0.0.1 测试版'
+    @observable showView = {
+        editor: true
+    }
 
     @action getToken() {
         return this.token
