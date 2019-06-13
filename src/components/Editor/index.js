@@ -1,38 +1,103 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
-import { Card } from 'antd';
+import { Card, Checkbox } from 'antd'
 
 class Editor extends Component {
     constructor() {
         super()
         this.state = {
-
+            checked: true,
+            disabled: false,
         }
     }
     render() {
+        const label = `${this.state.checked ? 'Checked' : 'Unchecked'}-${
+            this.state.disabled ? 'Disabled' : 'Enabled'
+        }`
         return (
-            <div>
+            <div style={{ background: 'white', width: "250px", borderLeft: "1px solid #dadcdf" }}>
                 <Card
-                title="Default size card"
-                extra={<a href="#">More</a>}
-                style={{ width: 300 }}
+                title="View"
+                style={{ width: 250 }}
                 >
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
+                    <p>
+                        <Checkbox
+                            checked={this.state.checked}
+                            disabled={this.state.disabled}
+                            onChange={this.onChange}
+                        >
+                            {label}
+                        </Checkbox>
+                    </p>
+                    <p>
+                        <Checkbox
+                            checked={this.state.checked}
+                            disabled={this.state.disabled}
+                            onChange={this.onChange}
+                        >
+                            {label}
+                        </Checkbox>
+                    </p>
+                    <p>
+                        <Checkbox
+                            checked={this.state.checked}
+                            disabled={this.state.disabled}
+                            onChange={this.onChange}
+                        >
+                            {label}
+                        </Checkbox>
+                    </p>
+                    <p>
+                        <Checkbox
+                            checked={this.state.checked}
+                            disabled={this.state.disabled}
+                            onChange={this.onChange}
+                        >
+                            {label}
+                        </Checkbox>
+                    </p>
                 </Card>
                 <Card
                 size="small"
-                title="Small size card"
-                extra={<a href="#">More</a>}
+                title="Options"
                 style={{ width: 300 }}
                 >
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
+                    <p>
+                        <Checkbox
+                            checked={this.state.checked}
+                            disabled={this.state.disabled}
+                            onChange={this.onChange}
+                        >
+                            {label}
+                        </Checkbox>
+                    </p>
+                    <p>
+                        <Checkbox
+                            checked={this.state.checked}
+                            disabled={this.state.disabled}
+                            onChange={this.onChange}
+                        >
+                            {label}
+                        </Checkbox>
+                    </p>
+                    <p>
+                        <Checkbox
+                            checked={this.state.checked}
+                            disabled={this.state.disabled}
+                            onChange={this.onChange}
+                        >
+                            {label}
+                        </Checkbox>
+                    </p>
                 </Card>
             </div>
         )
+    }
+
+    onChange = e => {
+        this.setState({
+          checked: e.target.checked,
+        })
     }
 }
 

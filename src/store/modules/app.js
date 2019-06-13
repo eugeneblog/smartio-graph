@@ -11,12 +11,15 @@ class AppState {
         editor: true
     }
 
+    @action setView = (name, value) => {
+        this.showView[name] = value
+    }
     @action getToken() {
         return this.token
     }
     @action addPanes() {
-        const activeKey = `newTab${this.newTabIndex++}`;
-        this.tabPanes.push({ title: 'New Tab', key: activeKey });
+        const activeKey = `newTab${this.newTabIndex++}`
+        this.tabPanes.push({ title: 'New Tab', key: activeKey })
     }
 }
 
