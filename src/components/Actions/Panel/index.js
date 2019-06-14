@@ -83,9 +83,9 @@ class ActionPanel extends React.Component {
         bigCircle.attr({
             fill: "#bada55"
         })
-        var smallCircle = s.circle(70, 70, 70);
+        var smallCircle = s.ellipse(70, 70, 70, 70);
         // Lets put this small circle and another one into a group:
-        s.group(smallCircle, s.circle(200, 150, 70));
+        s.group(smallCircle, s.ellipse(200, 150, 70, 70));
         // 改变滚动条位置
         let sDiv = Snap(`#${this.props.paneId}`).node
         this.changeScrollTo(sDiv, 450, 480)
@@ -282,6 +282,28 @@ class ActionPanel extends React.Component {
         }
     }
 
+    getchildAttr = function () {
+        var unique
+        function getInstance(ele) {
+            let attrs = ele.getBBox()
+            if (unique === undefined) {
+                unique = new Construct(attrs)
+            }
+            return unique
+        }
+        function Construct(attrs) {
+            this.attr = attrs
+        }
+        function clearunique() {
+            if (unique) {
+                unique = undefined
+            }
+        }
+        return {
+            getInstance: getInstance,
+            clearunique: clearunique
+        }
+    }()
     // 缩放元素
     changeElementZoom = (ele, attrs, moveX, moveY, direction, geometric) => {
         let len = ele.length
@@ -290,10 +312,13 @@ class ActionPanel extends React.Component {
         } else {
             for (let index = 0; index < len; index++) {
                 const element = ele[index];
-                elementChange(element.nodeName, element)
+                // 这里使用了闭包，为了保存最开始的属性
+                const callback = this.getchildAttr
+                const childAttr = callback.getInstance(element)
+                elementChange(element.nodeName, element, childAttr.attr, callback)
             }
         }
-        function elementChange(type, element) {
+        function elementChange(type, element, childAttr, callback) {
             switch (type) {
                 case 'rect':
                     if (direction === 'se-resize' || direction === 's-resize' || direction === 'e-resize') {
@@ -322,8 +347,14 @@ class ActionPanel extends React.Component {
                         })
                     }
                     break;
-                case 'circle':
-                    console.log('circle')
+                case 'ellipse':
+                    if (direction === 'se-resize' || direction === 's-resize' || direction === 'e-resize') {
+                        // let r = element.r.animVal.value + moveX
+                        Snap(element).attr({
+                            rx: childAttr['width'] / 2 + moveX,
+                            ry: childAttr['width'] / 2 + moveY
+                        })
+                    }
                     break;
                 default:
                     break;
@@ -361,7 +392,10 @@ class ActionPanel extends React.Component {
             })
         }
         document.onmouseup = function(e) {
+            // 清除闭包
+            _this.getchildAttr.clearunique()
             _this.clearEventBubble(e)
+            // 销毁事件函数
             document.onmousemove = null
             document.onmouseup = null
         }

@@ -60,8 +60,12 @@ class MenuState {
       'text': 'Help',
       'overlay': 'HelpMenu',
       'children': [{
-        'text': 'Version',
-        'shortcutKey': '0.0.1',
+        'text': 'Download smartgraph Desktop...',
+        'handle': 'downloadDesktop',
+        'isUse': false
+      }, {
+        'text': 'About smartgraph...',
+        'shortcutKey': '',
         'handle': 'showVersion',
         'isUse': false
       }]

@@ -17,6 +17,7 @@ class Editor extends Component {
         return (
             <div style={{ background: 'white', width: "250px", borderLeft: "1px solid #dadcdf" }}>
                 <Card
+                size="small"
                 title="View"
                 style={{ width: 250 }}
                 >
@@ -60,7 +61,7 @@ class Editor extends Component {
                 <Card
                 size="small"
                 title="Options"
-                style={{ width: 300 }}
+                style={{ width: 25000 }}
                 >
                     <p>
                         <Checkbox

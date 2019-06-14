@@ -1,7 +1,7 @@
 import React from 'react';
 import TabPanel from './TapPanel'
 import { observer, inject } from 'mobx-react'
-import { Layout, Modal, message, Tabs } from 'antd';
+import { Layout, Modal, message } from 'antd';
 const { Content } = Layout
 
 @inject(allStore => {

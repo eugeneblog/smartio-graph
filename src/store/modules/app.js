@@ -6,7 +6,7 @@ class AppState {
     @observable language = ''
     @observable token = ''
     @observable graphTemplate = ''
-    @observable version = '0.0.1 测试版'
+    @observable version = '0.1.5 测试版'
     @observable showView = {
         editor: true
     }

@@ -74,6 +74,11 @@ class MenuController extends React.Component {
   redoActionHandle = (self) => {
     this.props.actionstate.redo()
   }
+  
+  // 下载桌面客户端
+  downloadDesktop = (self) => {
+    
+  }
 }
 
 // 因为菜单是总控，基本上所有操作都是更改数据模型, 所以必须注入页面所有数据
